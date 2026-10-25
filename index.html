@@ -25,7 +25,7 @@ SOFTWARE.
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>Hanabi Simulator｜花火の3D観察室</title>
 <style>
@@ -38,29 +38,64 @@ SOFTWARE.
 .smokeheading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 12px}.smokeheading .switch{font-size:12px;color:#e1d4c3}.smokeheading span{font-size:10px;color:#92a4bd}.smokecontrols .control{margin-bottom:13px}.smokecontrols .controlhead output{font-size:15px}.smokecontrols .controlhead label{font-size:11px}.smokecontrols .control input{margin-bottom:3px}.smokenote{font-size:10px;color:#99acc4;line-height:1.8;margin:8px 0 14px}.smokestatus{margin-top:8px;font-size:10px;color:#c4c9d1}.windcompass{display:flex;justify-content:space-between;color:#8fa4bf;font-size:9px;margin:2px 0 9px}.smokecontrols[hidden],.smokestatus[hidden]{display:none}
 .typepicker{display:grid;gap:9px;margin:0 0 19px}.typepicker label{font-size:12px;color:#bac8dc}.typepicker select{width:100%;min-width:0;background:#182336;color:var(--text);border:1px solid #42516a;border-radius:7px;padding:10px;font-size:12px}.typedescription{font-size:11px;color:#b5c5da;line-height:1.8;margin:0;min-height:40px}.typepicker button{width:100%;font-size:12px}.activetypes{max-width:480px;color:#bdc9d8;font-size:11px;line-height:1.7;margin-top:8px;text-shadow:0 1px 5px #000}@media(max-width:700px){.activetypes{max-width:235px;font-size:10px}.typedescription{min-height:0}}
 details a{color:#a9d8ee;text-underline-offset:3px}
+.mobile-only{display:none}.panel-group{display:contents}
+@media (max-width:700px), (max-height:500px) and (pointer:coarse){
+ html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+ body{display:flex;flex-direction:column}
+ header{height:calc(58px + env(safe-area-inset-top));min-height:calc(58px + env(safe-area-inset-top));padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left))}
+ .logotype{font-size:20px;margin-bottom:3px;letter-spacing:.025em}.subtitle{font-size:9px}.topnote{display:none}
+ .workspace,.hide-controls .workspace{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto auto;height:calc(100vh - 58px - env(safe-area-inset-top));height:calc(100dvh - 58px - env(safe-area-inset-top));min-height:0;flex:1}
+ .main{min-height:0;grid-row:1}.scene,.hide-controls .scene{height:auto;min-height:0;flex:1}
+ .viewtop{top:12px;left:max(14px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));gap:6px}.viewtop>div:first-child{min-width:0}.eyebrow,.viewtitle,.pausedpill,.viewactions>#toggleControls,.viewactions>#fullscreen{display:none}
+ .livecoords{margin:0;max-width:none;gap:5px 12px;font-size:10px;line-height:1.8}.livecoords strong{margin-left:3px}.activetypes{max-width:260px;font-size:10px;margin-top:3px;line-height:1.5}
+ .viewactions{flex:none;display:flex;flex-direction:row}.viewactions .mobile-only{display:block;min-height:44px;padding:8px 10px;font-size:11px}
+ .viewbottom{left:14px;right:14px;bottom:12px}.scenehint,.mapbox{display:none!important}.gesturehint{display:block;color:#9eafc6;font-size:10px;line-height:1.5;text-shadow:0 1px 5px #000}
+ .timeline{padding:7px max(12px,env(safe-area-inset-right)) 5px max(12px,env(safe-area-inset-left));border-top-color:#263348}
+ .playrow{display:grid;grid-template-columns:minmax(78px,1fr) 44px auto 70px;gap:7px;align-items:center}.playrow .primary{min-width:0;padding:8px 4px;font-size:12px;min-height:44px}.playrow #restart{width:44px;min-height:44px;padding:8px;font-size:20px}
+ .playrow .timecode{grid-row:auto;min-width:0;margin:0;font-size:12px;white-space:nowrap}.timecode span{font-size:10px}.playrow .speed{grid-row:auto;width:70px;min-height:44px;font-size:12px;padding:7px 5px;justify-self:stretch}.phase,.timelabels{display:none}.scrub{height:28px;margin:3px 0 0}
+ .mobile-nav{display:grid;grid-row:3;grid-template-columns:repeat(3,1fr);gap:7px;background:#101b2c;border-top:1px solid #304059;padding:7px max(12px,env(safe-area-inset-right)) calc(7px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
+ .mobile-nav button{min-height:44px;font-size:12px;background:#17263b;border-color:#35445a}.mobile-nav button[aria-expanded=true]{color:#ffddb0;background:#34404b;border-color:var(--accent)}
+ .aside,.hide-controls .aside{display:none;grid-row:2;min-height:0;height:min(40dvh,330px);overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:0 max(16px,env(safe-area-inset-right)) 16px max(16px,env(safe-area-inset-left));border-left:0;border-top:1px solid #526079}
+ .mobile-panel-open .aside{display:block}.mobile-panelhead{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#101928;z-index:2;padding:8px 0;margin-bottom:5px}.mobile-panelhead strong{font-size:12px;font-weight:500;color:#d7dfeb}.mobile-panelhead button{min-height:44px;font-size:12px;padding:8px 12px}
+ .panel-group{display:none}body[data-mobile-panel=view] #panelView,body[data-mobile-panel=shapes] #panelShapes,body[data-mobile-panel=weather] #panelWeather{display:block}
+ .desktop-only,.aside>.sectionline{display:none!important}.asideheading{margin:10px 0}.asideheading h2{font-size:12px}.asideheading span{font-size:9px}.presetgrid{max-width:none;gap:5px}.presetgrid button{min-height:44px;font-size:11px}
+ .controlsgrid{display:grid;grid-template-columns:1fr;gap:0}.controlsgrid>.control:nth-child(n+3){display:none}.control{margin:14px 0}.controlhead{margin-bottom:0}.controlhead label{font-size:12px}.controlhead output{font-size:16px}.control input[type=range]{height:38px;margin:0;touch-action:pan-y}.controlbuttons{gap:8px}.controlbuttons button{min-height:44px;font-size:12px;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none}.controlbuttons kbd,.controlbuttons span,.controlnote,.sectionline{display:none}
+ .followrow{margin-top:12px}.followrow button{min-height:44px}.switch{min-height:44px;font-size:12px;gap:9px}.switch input{width:20px;height:20px}.switch kbd{display:none}.followrow .switch{font-size:11px}
+ .typepicker{gap:10px;margin-bottom:12px}.typepicker select{font-size:16px;min-height:44px;padding:10px}.typepicker button{min-height:44px}.typedescription{font-size:12px;line-height:1.8;min-height:0}.mobile-modelnote{display:block;font-size:10px;color:#94a7c0;line-height:1.8;margin:10px 0 0}
+ .smokeheading{margin:0 0 10px}.smokeheading span{font-size:9px}.smokecontrols .control{margin:10px 0}.smokecontrols .controlhead label{font-size:12px}.smokecontrols .control input{margin:0}.smokenote{font-size:10px;line-height:1.7}.windcompass{font-size:9px}.banner{padding:12px 16px}.banner strong{font-size:15px}.banner span{font-size:11px}.banner button{min-height:44px}
+}
+@media (max-width:360px){.livecoords{font-size:9px;gap:4px 8px}.activetypes{max-width:200px;font-size:9px}.gesturehint{font-size:9px}.playrow{gap:5px;grid-template-columns:minmax(72px,1fr) 42px auto 64px}.playrow .speed{width:64px}.playrow .timecode{font-size:11px}.presetgrid{grid-template-columns:1fr 1fr}}
+@media (min-width:560px) and (max-height:500px) and (pointer:coarse){
+ header{height:calc(42px + env(safe-area-inset-top));min-height:calc(42px + env(safe-area-inset-top));padding-top:calc(7px + env(safe-area-inset-top));padding-bottom:7px}.logotype{font-size:18px;margin:0}.subtitle{display:none}
+ .workspace,.hide-controls .workspace{height:calc(100dvh - 42px - env(safe-area-inset-top));grid-template-rows:minmax(0,1fr) auto}.main{grid-row:1;grid-column:1}.mobile-panel-open .workspace{grid-template-columns:minmax(0,1fr) min(42vw,320px)}
+ .aside,.hide-controls .aside{grid-row:1;grid-column:2;height:auto;border-top:0;border-left:1px solid #526079}.mobile-nav{grid-column:1/-1;grid-row:2;padding-top:5px;padding-bottom:calc(5px + env(safe-area-inset-bottom))}.mobile-nav button{min-height:44px}.timeline{padding-top:4px;padding-bottom:1px}.scrub{height:22px;margin:0}.viewtop{top:8px}.viewbottom{bottom:5px}.mobile-panel-open .activetypes{display:none}
+}
+
 </style>
 </head>
 <body>
 <header>
  <div class="brand"><h1 class="logotype">Hanabi Simulator</h1><div class="subtitle">花火の3D観察室 · ふたつの打上地点、自由な視点</div></div>
- <div class="topnote"><span class="tag">3 MINUTES / 2 LAUNCH SITES</span><br>東京湾をイメージした、立体の実験場</div>
+ <div class="topnote"><span class="tag">5 MINUTES / 2 LAUNCH SITES</span><br>東京湾をイメージした、立体の実験場</div>
 </header>
 <div class="workspace">
  <main class="main">
   <div class="scene" id="scene">
    <canvas id="world" role="img" aria-label="2地点から打ち上がる三次元の花火。操作パネルとキーボードで視点を変更できます。">Canvas対応ブラウザーで開いてください。</canvas>
-   <div class="viewtop"><div><div class="eyebrow">OBSERVATION / PERSPECTIVE</div><div class="viewtitle">花火を、立体で見る。<small id="viewName">湾岸から</small></div><div class="livecoords"><span>距離<strong id="hudDistance">1,100 m</strong></span><span>高度<strong id="hudHeight">25 m</strong></span><span>方位<strong id="hudAzimuth">0°</strong></span></div><div class="activetypes" id="activeTypes"></div><div class="pausedpill" id="pausePill">Ⅱ 一時停止中 · 視点は自由に動かせます</div></div><div class="viewactions"><button id="toggleControls" aria-pressed="false">操作パネルを隠す</button><button id="fullscreen">全画面</button></div></div>
-   <div class="viewbottom"><div class="scenehint"><strong id="insightTitle">距離が変わると、見かけの大きさが変わる。</strong><span id="insightText">一時停止してから回り込むと、同じ花火を別の角度から観察できます。</span><div class="smokestatus" id="smokeStatus" hidden></div><div class="muted">ドラッグ：周回＋視線の上下 / ホイール：距離</div></div><div class="mapbox" id="mapbox"><div class="maphead"><span>上から見た位置</span><span>＋Z ↑</span></div><canvas id="map" width="348" height="280" role="img" aria-label="上空図。AとBは打ち上げ地点、三角は観測者です。風の流れる向きを矢印で表示します。"></canvas><div class="mapcaption">A・B：打上地点　△：観測者</div></div></div>
-   <div id="finished" class="banner" hidden><strong>3分間の打ち上げが終了しました</strong><span>時刻バーを戻して、同じ瞬間を違う視点から。</span></div>
+   <div class="viewtop"><div><div class="eyebrow">OBSERVATION / PERSPECTIVE</div><div class="viewtitle">花火を、立体で見る。<small id="viewName">湾岸から</small></div><div class="livecoords"><span>距離<strong id="hudDistance">1,100 m</strong></span><span>高度<strong id="hudHeight">25 m</strong></span><span>方位<strong id="hudAzimuth">0°</strong></span></div><div class="activetypes" id="activeTypes"></div><div class="pausedpill" id="pausePill">Ⅱ 一時停止中 · 視点は自由に動かせます</div></div><div class="viewactions"><button id="mobileRecenter" class="mobile-only" aria-label="花火の中心を見る">中心へ</button><button id="toggleControls" aria-pressed="false">操作パネルを隠す</button><button id="fullscreen">全画面</button></div></div>
+   <div class="viewbottom"><div class="mobile-only gesturehint">1本指で周回・見上げる角度 ／ 2本指で近づく・離れる</div><div class="scenehint"><strong id="insightTitle">距離が変わると、見かけの大きさが変わる。</strong><span id="insightText">一時停止してから回り込むと、同じ花火を別の角度から観察できます。</span><div class="smokestatus" id="smokeStatus" hidden></div><div class="muted">ドラッグ：周回＋視線の上下 / ホイール：距離</div></div><div class="mapbox" id="mapbox"><div class="maphead"><span>上から見た位置</span><span>＋Z ↑</span></div><canvas id="map" width="348" height="280" role="img" aria-label="上空図。AとBは打ち上げ地点、三角は観測者です。風の流れる向きを矢印で表示します。"></canvas><div class="mapcaption">A・B：打上地点　△：観測者</div></div></div>
+   <div id="finished" class="banner" hidden><strong>5分間の打ち上げが終了しました</strong><span>時刻バーを戻して、同じ瞬間を違う視点から。</span></div>
    <div id="offscreen" class="banner" hidden><span>花火の中心が画面の外にあります</span><br><button id="recenterOverlay">中心を見る</button></div>
   </div>
   <section class="timeline" aria-label="再生と時間">
-   <div class="playrow"><button class="primary" id="play" aria-label="一時停止">Ⅱ 一時停止</button><button id="restart" aria-label="最初から再生">↺ 最初から</button><div class="timecode"><output id="clock">0:00</output><span> / 3:00</span></div><span class="phase" id="phase">01 / 開幕</span><label class="sr-only" for="speed">再生速度</label><select class="speed" id="speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1× 速度</option></select></div>
-   <label class="sr-only" for="time">観察する時刻（秒）</label><input class="scrub" id="time" type="range" min="0" max="180" value="0" step="0.05" aria-valuetext="0分0秒">
-   <div class="timelabels"><span>0:00 開幕</span><span>1:00 広がり</span><span>2:00 輪と球</span><span>3:00 終幕</span></div>
+   <div class="playrow"><button class="primary" id="play" aria-label="一時停止">Ⅱ 一時停止</button><button id="restart" aria-label="最初から再生">↺<span class="desktop-only"> 最初から</span></button><div class="timecode"><output id="clock">0:00</output><span> / 5:00</span></div><span class="phase" id="phase">01 / 開幕</span><label class="sr-only" for="speed">再生速度</label><select class="speed" id="speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1.0×</option><option value="1.5">1.5×</option><option value="2">2.0×</option></select></div>
+   <label class="sr-only" for="time">観察する時刻（秒）</label><input class="scrub" id="time" type="range" min="0" max="300" value="0" step="0.05" aria-valuetext="0分0秒">
+   <div class="timelabels"><span>0:00 開幕</span><span>1:00 広がり</span><span>3:00 輪と球</span><span>5:00 終幕</span></div>
   </section>
  </main>
  <aside class="aside" aria-label="観測条件の操作パネル">
+  <div class="mobile-only mobile-panelhead"><strong>観察の設定</strong><button id="mobileClose" aria-label="設定を閉じる">閉じる ×</button></div>
+  <div class="panel-group" id="panelView">
   <div class="asideheading"><h2>観測する場所</h2><span>VIEWPOINT</span></div>
   <div class="presetgrid" aria-label="視点プリセット"><button data-preset="shore" class="active" aria-pressed="true">湾岸</button><button data-preset="air" aria-pressed="false">上空</button><button data-preset="side" aria-pressed="false">真横</button><button data-preset="near" aria-pressed="false">花火のそば</button></div>
   <hr class="sectionline">
@@ -72,6 +107,8 @@ details a{color:#a9d8ee;text-underline-offset:3px}
   </div>
   <div class="followrow"><button id="recenter">◎ 中心を見る</button><label class="switch"><input id="tracking" type="checkbox" checked>中心を追う</label></div>
   <hr class="sectionline">
+  </div>
+  <div class="panel-group" id="panelShapes">
   <div class="asideheading"><h2>花火の形を選ぶ</h2><span id="typeCount">10 TYPES</span></div>
   <section class="typepicker" aria-label="花火の種類別の観察">
    <label for="fireworkType">観察する種類</label><select id="fireworkType" aria-describedby="shapeDescription"></select>
@@ -79,8 +116,11 @@ details a{color:#a9d8ee;text-underline-offset:3px}
    <button id="inspectType">この形が開く時刻で一時停止</button>
    <p class="controlnote">演出中の対応時刻に移動します。視点を回して立体の違いを観察できます。</p>
   </section>
-  <div class="asideheading"><h2>立体を見つける</h2><span>EXPLORE</span></div>
-  <div class="extras"><label class="switch"><input id="guides" type="checkbox">粒の配置・軌道の補助線</label><label class="switch"><input id="grid" type="checkbox" checked>水面グリッド</label><label class="switch"><input id="showMap" type="checkbox" checked>位置図</label></div>
+  <div class="asideheading desktop-only"><h2>立体を見つける</h2><span>EXPLORE</span></div>
+  <div class="extras desktop-only"><label class="switch"><input id="guides" type="checkbox">粒の配置・軌道の補助線</label><label class="switch"><input id="grid" type="checkbox" checked>水面グリッド</label><label class="switch"><input id="showMap" type="checkbox" checked>位置図</label></div>
+  <p class="mobile-only mobile-modelnote">10種類の花火を、同じ瞬間で止めて観察できます。運動は物理法則に沿った簡易モデルで、実物の測定値による再現ではありません。</p>
+  </div>
+  <div class="panel-group" id="panelWeather">
   <div class="smokeheading"><label class="switch"><input id="smoke" type="checkbox" aria-controls="smokeControls">煙を再現する <kbd>H</kbd></label><span>SMOKE & WIND</span></div>
   <div class="smokecontrols" id="smokeControls" hidden>
    <section class="control"><div class="controlhead"><label for="smokeDensity">煙の濃さ</label><output id="smokeDensityValue" for="smokeDensity">100<small>%</small></output></div><input id="smokeDensity" type="range" min="20" max="500" step="10" value="100"></section>
@@ -90,11 +130,19 @@ details a{color:#a9d8ee;text-underline-offset:3px}
    <section class="control"><div class="controlhead"><label for="windDirection">風の向き（吹いていく先）</label><output id="windDirectionValue" for="windDirection">90<small>°</small></output></div><input id="windDirection" type="range" min="0" max="360" step="5" value="90"><div class="windcompass"><span>0° ↑ ＋Z</span><span>90° → ＋X</span><span>180° ↓ −Z</span><span>270° ← −X</span></div></section>
    <p class="smokenote">一定の風を全時間に適用します。設定を変えると、打ち上げから花火と煙を計算し直します。0 m/sで無風にできます。</p>
   </div>
+  </div>
+  <div class="desktop-only">
   <button id="study" style="width:100%">球と輪を止めて観察する</button>
   <div class="guidecallout"><strong>同じ瞬間を、違う場所から。</strong><br>形を選んで一時停止 → 左右キーで周回。小花の群れの奥行き、横から見た輪の薄さ、風による粒の流れ方を観察できます。</div>
-  <details><summary>操作ガイド・このモデルについて</summary><p><kbd>Space</kbd> 再生／停止　<kbd>R</kbd> 最初から<br><kbd>H</kbd> 煙の表示切替<br><kbd>Shift</kbd>＋移動キーで速く移動<br><kbd>A</kbd> 近づく　<kbd>Z</kbd> 離れる<br><kbd>↑</kbd> / <kbd>W</kbd> 上昇　<kbd>↓</kbd> / <kbd>S</kbd> 下降<br><kbd>←</kbd> / <kbd>→</kbd> 周回　<kbd>E</kbd> / <kbd>D</kbd> 視線の上下</p><p>スライダーの操作中は矢印キーでその値を変更できます。スライダー以外にフォーカスを移すと、上記のショートカットに戻ります。</p><p>「中心を追う」は高度300 mの中点に視線を合わせます。E／Dやドラッグで角度を変えると追尾が解除されます。ボタンは長押しできます。「花火のそば」でB地点の近く・高度300 mへ移動します。Aキーやホイールでさらに接近でき、左右キーでA地点側にも回り込めます。近距離では移動がゆっくりになります。</p><p>花火は10種類。玉・光る粒・尾の火花に三次元の位置と速度があり、重力（9.81 m/s²）と、風に対する速度の二乗に比例する空気抵抗を計算します。玉は打ち上げ後に重力と空気抵抗を受け、開花時には玉の速度が粒へ引き継がれます。小花の群れは飛び出した子玉が時間差で開き、しだれの尾は移動する粒から放たれる火花で表現します。扇形は打上地点から斜めに飛ぶ光の粒の列です。補助線は、粒の配置や計算された飛行軌道を表示します。</p><p>2地点の間隔は460 m。東京湾花火大会の雰囲気を参考にした架空の配置・演出で、実際の地形や開催プログラムの再現ではありません。水面の反射は演出的な近似です。音はありません。</p><p>煙は実際に計算された飛行・開花位置から発生し、風に流され、上昇・拡散して薄くなる簡易モデルです。「濃さ」は煙の光学的な量を変え、500%でも不透明さには上限があります。風の方向は「吹いていく先」で、通常の気象の風向（吹いてくる方角）とは逆です。3分の終了時は残煙も静止します。</p><p>運動は物理法則に沿って計算しますが、実物の測定値で検証した再現ではありません。開花の初速度・燃焼時間・色は種類ごとの仮定です。燃焼による粒の変化は近似し、爆発の圧力や燃焼化学、複雑な乱流、煙の散乱光は精密には解いていません。煙の表示と水面反射も見え方の近似です。</p><p>参照：<a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/" target="_blank" rel="noopener">NASAの抗力式</a> ／ <a href="https://www.hanabi-jpa.jp/uchiage/structure.html" target="_blank" rel="noopener">日本煙火協会の花火解説</a></p><p>標準速度で、燃え尽きた後の余韻を含め3分間。0.5×／0.25×は観察用のスロー再生です。別のタブに移動すると自動で一時停止します。</p></details>
+  <details><summary>操作ガイド・このモデルについて</summary><p><kbd>Space</kbd> 再生／停止　<kbd>R</kbd> 最初から<br><kbd>H</kbd> 煙の表示切替<br><kbd>Shift</kbd>＋移動キーで速く移動<br><kbd>A</kbd> 近づく　<kbd>Z</kbd> 離れる<br><kbd>↑</kbd> / <kbd>W</kbd> 上昇　<kbd>↓</kbd> / <kbd>S</kbd> 下降<br><kbd>←</kbd> / <kbd>→</kbd> 周回　<kbd>E</kbd> / <kbd>D</kbd> 視線の上下</p><p>スライダーの操作中は矢印キーでその値を変更できます。スライダー以外にフォーカスを移すと、上記のショートカットに戻ります。</p><p>「中心を追う」は高度300 mの中点に視線を合わせます。E／Dやドラッグで角度を変えると追尾が解除されます。ボタンは長押しできます。「花火のそば」でB地点の近く・高度300 mへ移動します。Aキーやホイールでさらに接近でき、左右キーでA地点側にも回り込めます。近距離では移動がゆっくりになります。</p><p>花火は10種類。玉・光る粒・尾の火花に三次元の位置と速度があり、重力（9.81 m/s²）と、風に対する速度の二乗に比例する空気抵抗を計算します。玉は打ち上げ後に重力と空気抵抗を受け、開花時には玉の速度が粒へ引き継がれます。小花の群れは飛び出した子玉が時間差で開き、しだれの尾は移動する粒から放たれる火花で表現します。扇形は打上地点から斜めに飛ぶ光の粒の列です。補助線は、粒の配置や計算された飛行軌道を表示します。</p><p>2地点の間隔は460 m。東京湾花火大会の雰囲気を参考にした架空の配置・演出で、実際の地形や開催プログラムの再現ではありません。水面の反射は演出的な近似です。音はありません。</p><p>煙は実際に計算された飛行・開花位置から発生し、風に流され、上昇・拡散して薄くなる簡易モデルです。「濃さ」は煙の光学的な量を変え、500%でも不透明さには上限があります。風の方向は「吹いていく先」で、通常の気象の風向（吹いてくる方角）とは逆です。5分の終了時は残煙も静止します。</p><p>運動は物理法則に沿って計算しますが、実物の測定値で検証した再現ではありません。開花の初速度・燃焼時間・色は種類ごとの仮定です。燃焼による粒の変化は近似し、爆発の圧力や燃焼化学、複雑な乱流、煙の散乱光は精密には解いていません。煙の表示と水面反射も見え方の近似です。</p><p>参照：<a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/" target="_blank" rel="noopener">NASAの抗力式</a> ／ <a href="https://www.hanabi-jpa.jp/uchiage/structure.html" target="_blank" rel="noopener">日本煙火協会の花火解説</a></p><p>標準速度で、燃え尽きた後の余韻を含め5分間。0.25×／0.5×のスロー再生と、1.5×／2.0×の早送りを選べます。別のタブに移動すると自動で一時停止します。</p></details>
   <div class="footerlabel">Hanabi Simulator · 花火の3D観察室<br>オフライン対応 · このHTMLだけで動作します</div>
+  </div>
  </aside>
+ <nav class="mobile-only mobile-nav" id="mobileNav" aria-label="スマホの操作メニュー">
+  <button data-mobile-panel="view" aria-controls="panelView" aria-expanded="false">◎ 視点</button>
+  <button data-mobile-panel="shapes" aria-controls="panelShapes" aria-expanded="false">✳ 花火</button>
+  <button data-mobile-panel="weather" aria-controls="panelWeather" aria-expanded="false">≈ 煙・風</button>
+ </nav>
 </div>
 <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
 <script>
@@ -108,7 +156,7 @@ details a{color:#a9d8ee;text-underline-offset:3px}
  */
 (function (root) {
   'use strict';
-  const DURATION = 180, TAU = Math.PI * 2, GRAVITY = 9.81, STEP = 1 / 90;
+  const DURATION = 300, FINALE_START = 266, TAU = Math.PI * 2, GRAVITY = 9.81, STEP = 1 / 90;
   const SITES = [{ id: 'A', x: -230, y: 0, z: 0 }, { id: 'B', x: 230, y: 0, z: 0 }];
   const PALETTE = [[255,191,76], [103,226,255], [255,115,164], [166,136,255], [149,255,180], [255,235,179]];
   const TYPES = [
@@ -208,7 +256,13 @@ details a{color:#a9d8ee;text-underline-offset:3px}
   for(let t=31.1,v=0;t<75;t+=3.05,v++){addEvent(v%2,t,sequence++,false);if(v%3!==1)addEvent((v+1)%2,t+.64,sequence++,false);}
   for(let t=76,v=0;t<120;t+=2.65,v++){addEvent(v%2,t,sequence++,false);if(v%2===0)addEvent((v+1)%2,t+.37,sequence++,false);}
   for(let t=121;t<145;t+=2.7){addEvent(0,t,sequence++,false);addEvent(1,t+.2,sequence++,false);}
-  for(let t=146;t<=159.001;t+=1.1){addEvent(0,t,sequence++,true);addEvent(1,t+.22,sequence++,true);}
+  // Keep every shell's flight and burn durations unchanged. The longer show
+  // adds launches through the middle, then moves the same finale 120 s later.
+  // Create that finale first so its deterministic seeds and shapes stay stable.
+  for(let t=FINALE_START;t<=FINALE_START+13.001;t+=1.1){addEvent(0,t,sequence++,true);addEvent(1,t+.22,sequence++,true);}
+  for(let t=146,v=0;t<196;t+=3.05,v++){addEvent(v%2,t,sequence++,false);if(v%3!==1)addEvent((v+1)%2,t+.64,sequence++,false);}
+  for(let t=197,v=0;t<239;t+=2.65,v++){addEvent(v%2,t,sequence++,false);if(v%2===0)addEvent((v+1)%2,t+.37,sequence++,false);}
+  for(let t=240;t<265;t+=2.7){addEvent(0,t,sequence++,false);addEvent(1,t+.2,sequence++,false);}
   events.sort((a,b)=>a.launch-b.launch);
   const eventMap=new Map(events.map(e=>[e.id,e]));
   function eventOf(value){return typeof value==='string'?eventMap.get(value):value;}
@@ -358,7 +412,7 @@ details a{color:#a9d8ee;text-underline-offset:3px}
     for(const e of events){if(e.type!==type.id||e.burst>130)continue;const t=e.burst+offset;let score=e.launch*.002;for(const other of events){if(other===e||t<other.burst||t>other.burst+other.life)continue;score+=(other.site===e.site?3:.6)*(1-(t-other.burst)/other.life);}if(score<bestScore){best=e;bestScore=score;}}
     studyTimes[type.id]={time:best.burst+offset,eventId:best.id,azimuth:best.studyAzimuth};}
   const comparisonTime=Math.max(events[0].burst,events[1].burst)+1.5;
-  root.FireworksModel={sites:SITES,duration:DURATION,types:TYPES,events,studyTimes,comparisonTime,sample,sourceAt,smokeSources,
+  root.FireworksModel={sites:SITES,duration:DURATION,finaleStart:FINALE_START,types:TYPES,events,studyTimes,comparisonTime,sample,sourceAt,smokeSources,
     physics:{step:STEP,gravity:GRAVITY,dragLaw:'quadratic relative-air velocity',integrate,acceleration,eventState}};
 })(typeof window!=='undefined'?window:globalThis);
 
@@ -451,7 +505,7 @@ details a{color:#a9d8ee;text-underline-offset:3px}
   function sample(time, events, options = {}) {
     if (!Array.isArray(events)) return [];
     options = options || {};
-    const t = clamp(finite(time, 0), 0, 180);
+    const t = clamp(finite(time, 0), 0, finite(root.FireworksModel && root.FireworksModel.duration, 300));
     const density = clamp(finite(options.density, 1), 0, 5);
     if (density === 0) return [];
     const wind = windSettings(options);
@@ -505,13 +559,15 @@ details a{color:#a9d8ee;text-underline-offset:3px}
   const model = window.FireworksModel, TAU = Math.PI * 2, DEG = Math.PI / 180;
   const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
   const wrap = n => (n % 360 + 360) % 360;
+  const mobileQuery = matchMedia('(max-width: 700px), (max-height: 500px) and (pointer: coarse)');
+  let mobileMode = mobileQuery.matches;
   const state = { time:0, playing:!matchMedia('(prefers-reduced-motion: reduce)').matches, speed:1, distance:1100, height:25, azimuth:0, pitch:14, tracking:true, guides:false, grid:true, map:true, smoke:false, smokeDensity:1, windSpeed:4, windDirection:90, selectedType:'sphere', studyEventId:null };
   const presets = {shore:[1100,25,0],air:[500,1100,25],side:[1100,80,90],near:[350,300,90]};
   const presetNames = {shore:'湾岸から',air:'上空から',side:'真横から',near:'花火のそばから'};
   const typeById=new Map(model.types.map(type=>[type.id,type]));
   for(const type of model.types){const option=document.createElement('option');option.value=type.id;option.textContent=`${type.name} · ${type.dimension}`;$('fireworkType').appendChild(option);}
   $('typeCount').textContent=`${model.types.length} TYPES`;
-  const keys = new Set(); let heldAction=null, holdSince=0, lastFrame=0, lastUI=-1, dirty=true, width=0,height=0,dpr=1, camera;
+  const keys = new Set(); let heldAction=null, holdSince=0, lastFrame=0, lastDraw=-Infinity, lastUI=-1, dirty=true, width=0,height=0,dpr=1, camera;
   let worldSample=model.sample(0), sampleKey='', smokeSample=[], smokeKey='';
   const rng = seed => {let s=seed;return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296;}};
   const random=rng(4621), skyStars=[], buildings=[], waves=[];
@@ -565,6 +621,19 @@ details a{color:#a9d8ee;text-underline-offset:3px}
     ctx.restore();
   }
   function announce(text){$('announcement').textContent=text;}
+  function setMobilePanel(name,restoreFocus=false){
+    const previous=document.body.dataset.mobilePanel;
+    const next=mobileMode?name:'';
+    if(next)document.body.dataset.mobilePanel=next;else delete document.body.dataset.mobilePanel;
+    document.body.classList.toggle('mobile-panel-open',Boolean(next));
+    document.querySelectorAll('#mobileNav [data-mobile-panel]').forEach(button=>button.setAttribute('aria-expanded',String(button.dataset.mobilePanel===next)));
+    keys.clear();heldAction=null;clearPointers();
+    if(next)$('mobileClose').focus({preventScroll:true});
+    else if(restoreFocus&&mobileMode&&previous)document.querySelector(`#mobileNav [data-mobile-panel="${previous}"]`)?.focus({preventScroll:true});
+  }
+  document.querySelectorAll('#mobileNav [data-mobile-panel]').forEach(button=>button.addEventListener('click',()=>setMobilePanel(document.body.dataset.mobilePanel===button.dataset.mobilePanel?'':button.dataset.mobilePanel)));
+  $('mobileClose').addEventListener('click',()=>setMobilePanel('',true));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.dataset.mobilePanel){e.preventDefault();setMobilePanel('',true);}});
   function centerPitch(){return Math.atan2(300-state.height,state.distance)/DEG;}
   function cameraFor(s=state){const a=s.azimuth*DEG,p=s.pitch*DEG,sa=Math.sin(a),ca=Math.cos(a),sp=Math.sin(p),cp=Math.cos(p);return{x:sa*s.distance,y:s.height,z:ca*s.distance,right:[ca,0,-sa],up:[sa*sp,cp,ca*sp],forward:[-sa*cp,sp,-ca*cp],f:Math.min(height/(2*Math.tan(24*DEG)),width/(2*Math.tan(32*DEG))),cx:width/2,cy:height*.52};}
   function view(x,y,z){const dx=x-camera.x,dy=y-camera.y,dz=z-camera.z;return{x:dx*camera.right[0]+dz*camera.right[2],y:dx*camera.up[0]+dy*camera.up[1]+dz*camera.up[2],z:dx*camera.forward[0]+dy*camera.forward[1]+dz*camera.forward[2]};}
@@ -580,7 +649,7 @@ details a{color:#a9d8ee;text-underline-offset:3px}
     for(const star of skyStars){const p=project(star.x,star.y,star.z);if(!inView(p,2))continue;ctx.fillStyle=`rgba(187,207,231,${star.alpha})`;ctx.beginPath();ctx.arc(p.x,p.y,star.size,0,TAU);ctx.fill();}
     polygon([[-70000,0,-70000],[70000,0,-70000],[70000,0,70000],[-70000,0,70000]],'#091929');
     if(state.grid){for(let i=-3000;i<=3000;i+=200){const major=i%1000===0;line([i,0,-3000],[i,0,3000],major?'rgba(83,131,161,.22)':'rgba(77,123,154,.10)');line([-3000,0,i],[3000,0,i],major?'rgba(83,131,161,.22)':'rgba(77,123,154,.10)');}const ring=[];for(let i=0;i<=100;i++)ring.push([Math.sin(i/100*TAU)*state.distance,.2,Math.cos(i/100*TAU)*state.distance]);path3(ring,'rgba(137,182,208,.15)');}
-    for(const w of waves)line([w.x,.4,w.z],[w.x+w.len,.4,w.z],`rgba(66,110,143,${w.alpha})`,.7);
+    for(let i=0;i<waves.length;i+=mobileMode?3:1){const w=waves[i];line([w.x,.4,w.z],[w.x+w.len,.4,w.z],`rgba(66,110,143,${w.alpha})`,.7);}
     buildings.sort((a,b)=>Math.hypot(b.x-camera.x,b.z-camera.z)-Math.hypot(a.x-camera.x,a.z-camera.z));
     for(const b of buildings){const x=b.x,z=b.z,w=b.w/2,d=b.d/2,h=b.h;const center=project(x,h/2,z);if(!inView(center,80))continue;polygon([[x-w,0,z-d],[x+w,0,z-d],[x+w,h,z-d],[x-w,h,z-d]],'#0b1424');polygon([[x-w,0,z+d],[x+w,0,z+d],[x+w,h,z+d],[x-w,h,z+d]],'#101c2e');polygon([[x-w,0,z-d],[x-w,0,z+d],[x-w,h,z+d],[x-w,h,z-d]],'#121e30');polygon([[x+w,0,z-d],[x+w,0,z+d],[x+w,h,z+d],[x+w,h,z-d]],'#142136');polygon([[x-w,h,z-d],[x+w,h,z-d],[x+w,h,z+d],[x-w,h,z+d]],'#18263b');for(let j=0;j<Math.floor(h/16);j++){const y=8+j*15;const p=project(x,y,z+Math.sign(camera.z-z)*(d+.1));if(p){ctx.fillStyle=(j+b.seed)%4===0?'#948774':'#385473';ctx.globalAlpha=.5;ctx.fillRect(p.x-1,p.y,2,1);ctx.globalAlpha=1;}}}
     for(const site of model.sites){const {x,z}=site;polygon([[x-31,2,z-15],[x+31,2,z-15],[x+31,2,z+15],[x-31,2,z+15]],'#364959');line([x-31,3,z+15],[x+31,3,z+15],'#b9aa88',1.7);const p=project(x,6,z);if(p){ctx.fillStyle=site.id==='A'?'#8bd0ed':'#f2b0c3';ctx.beginPath();ctx.arc(p.x,p.y,2,0,TAU);ctx.fill();}label(`打上 ${site.id}`,x,10,z,site.id==='A'?'#a7d9f3':'#f2bdd0',20);}
@@ -628,7 +697,7 @@ details a{color:#a9d8ee;text-underline-offset:3px}
     }
     ctx.restore();
   }
-  function drawMap(){if(!state.map)return;mc.setTransform(2,0,0,2,0,0);const w=174,h=140,cx=87,cy=71,scale=53/(Math.max(state.distance,650)*1.15);mc.clearRect(0,0,w,h);const xy=(x,z)=>[cx+x*scale,cy-z*scale];mc.strokeStyle='#2c4258';mc.lineWidth=.7;mc.beginPath();mc.moveTo(cx,9);mc.lineTo(cx,133);mc.moveTo(14,cy);mc.lineTo(160,cy);mc.stroke();mc.setLineDash([2,4]);mc.beginPath();mc.arc(cx,cy,state.distance*scale,0,TAU);mc.stroke();mc.setLineDash([]);const cp=xy(camera.x,camera.z);mc.strokeStyle='#cfbd9c';mc.beginPath();mc.moveTo(...cp);mc.lineTo(cx,cy);mc.stroke();mc.fillStyle='rgba(210,188,151,.07)';mc.beginPath();mc.moveTo(...cp);const facing=Math.atan2(cy-cp[1],cx-cp[0]);mc.arc(...cp,Math.min(75,state.distance*scale),facing-.45,facing+.45);mc.closePath();mc.fill();for(const s of model.sites){const p=xy(s.x,s.z);mc.fillStyle=s.id==='A'?'#97cfea':'#e9acc3';mc.beginPath();mc.arc(...p,3,0,TAU);mc.fill();mc.font='10px sans-serif';mc.textAlign=s.id==='A'?'right':'left';mc.fillText(s.id,p[0]+(s.id==='A'?-6:6),p[1]+4);}mc.save();mc.translate(...cp);mc.rotate(facing);mc.fillStyle='#f3ce98';mc.beginPath();mc.moveTo(6,0);mc.lineTo(-4,-4);mc.lineTo(-2,0);mc.lineTo(-4,4);mc.closePath();mc.fill();mc.restore();mc.fillStyle='#93a9c0';mc.font='9px sans-serif';mc.textAlign='right';mc.fillText(`${Math.round(state.azimuth)}°`,163,131);drawWindMap();}
+  function drawMap(){if(!state.map||mobileMode)return;mc.setTransform(2,0,0,2,0,0);const w=174,h=140,cx=87,cy=71,scale=53/(Math.max(state.distance,650)*1.15);mc.clearRect(0,0,w,h);const xy=(x,z)=>[cx+x*scale,cy-z*scale];mc.strokeStyle='#2c4258';mc.lineWidth=.7;mc.beginPath();mc.moveTo(cx,9);mc.lineTo(cx,133);mc.moveTo(14,cy);mc.lineTo(160,cy);mc.stroke();mc.setLineDash([2,4]);mc.beginPath();mc.arc(cx,cy,state.distance*scale,0,TAU);mc.stroke();mc.setLineDash([]);const cp=xy(camera.x,camera.z);mc.strokeStyle='#cfbd9c';mc.beginPath();mc.moveTo(...cp);mc.lineTo(cx,cy);mc.stroke();mc.fillStyle='rgba(210,188,151,.07)';mc.beginPath();mc.moveTo(...cp);const facing=Math.atan2(cy-cp[1],cx-cp[0]);mc.arc(...cp,Math.min(75,state.distance*scale),facing-.45,facing+.45);mc.closePath();mc.fill();for(const s of model.sites){const p=xy(s.x,s.z);mc.fillStyle=s.id==='A'?'#97cfea':'#e9acc3';mc.beginPath();mc.arc(...p,3,0,TAU);mc.fill();mc.font='10px sans-serif';mc.textAlign=s.id==='A'?'right':'left';mc.fillText(s.id,p[0]+(s.id==='A'?-6:6),p[1]+4);}mc.save();mc.translate(...cp);mc.rotate(facing);mc.fillStyle='#f3ce98';mc.beginPath();mc.moveTo(6,0);mc.lineTo(-4,-4);mc.lineTo(-2,0);mc.lineTo(-4,4);mc.closePath();mc.fill();mc.restore();mc.fillStyle='#93a9c0';mc.font='9px sans-serif';mc.textAlign='right';mc.fillText(`${Math.round(state.azimuth)}°`,163,131);drawWindMap();}
   function drawWindMap(){
     const a=state.windDirection*DEG,dx=Math.sin(a),dy=-Math.cos(a),cx=25,cy=22;
     mc.fillStyle='#c4c9d1';mc.strokeStyle='#c4c9d1';mc.lineWidth=1.3;
@@ -652,23 +721,24 @@ details a{color:#a9d8ee;text-underline-offset:3px}
       const live=[...new Set(worldSample.bursts.filter(b=>b.site===site.id&&b.age<b.life*.76).map(b=>typeById.get(b.type).name))];
       if(live.length)names.push(`${site.id}：${live.slice(-2).join('・')}`);
     }
-    const caption=names.length?names.join('　 /　 '):state.time>=180?'打ち上げ終了':'開花を待っています';if($('activeTypes').textContent!==caption)$('activeTypes').textContent=caption;
+    const caption=names.length?names.join('　 /　 '):state.time>=model.duration?'打ち上げ終了':'開花を待っています';if($('activeTypes').textContent!==caption)$('activeTypes').textContent=caption;
   }
   function inspectType(){
     const selected=model.studyTimes[state.selectedType],meta=typeById.get(state.selectedType);
-    state.time=selected.time;state.playing=false;state.studyEventId=selected.eventId;state.guides=true;
+    state.time=selected.time;state.playing=false;state.studyEventId=selected.eventId;state.guides=!mobileMode;
     state.distance=950;state.height=65;state.azimuth=wrap(selected.azimuth);state.tracking=true;
     changed();$('viewName').textContent=`${meta.name}の観察`;
-    announce(`${meta.name}が開いた時刻で一時停止しました。左右キーで周回して観察できます`);
+    if(mobileMode)setMobilePanel('',true);
+    announce(`${meta.name}が開いた時刻で一時停止しました。${mobileMode?'指でドラッグして':'左右キーで'}周回して観察できます`);
   }
-  function draw(){camera=cameraFor();const key=[state.time,state.windSpeed,state.windDirection].join('/');if(sampleKey!==key){worldSample=model.sample(state.time,{windSpeed:state.windSpeed,windDirection:state.windDirection});sampleKey=key;updateTypeUI();}refreshSmoke();drawEnvironment();drawReflection();drawGuides();drawFireworks();drawLocalSmoke();drawMap();const target=project(0,300,0);$('offscreen').hidden=state.time>=180||inView(target,-40);dirty=false;}
-  function resize(){const rect=$('scene').getBoundingClientRect();width=rect.width;height=rect.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);dirty=true;}
+  function draw(){camera=cameraFor();const key=[state.time,state.windSpeed,state.windDirection].join('/');if(sampleKey!==key){worldSample=model.sample(state.time,{windSpeed:state.windSpeed,windDirection:state.windDirection});sampleKey=key;updateTypeUI();}refreshSmoke();drawEnvironment();drawReflection();drawGuides();drawFireworks();drawLocalSmoke();drawMap();const target=project(0,300,0);$('offscreen').hidden=state.time>=model.duration||inView(target,-40);dirty=false;}
+  function resize(){const rect=$('scene').getBoundingClientRect();width=rect.width;height=rect.height;dpr=Math.min(devicePixelRatio||1,mobileMode?1.5:2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);dirty=true;}
   function updateUI(){
     for(const name of ['distance','height','azimuth','pitch']){const n=Math.round(state[name]);$(name).value=n;$(`${name}Value`).innerHTML=`${n.toLocaleString('ja-JP')}<small>${name==='height'||name==='distance'?'m':'°'}</small>`;}
     $('hudDistance').textContent=`${Math.round(state.distance).toLocaleString('ja-JP')} m`;$('hudHeight').textContent=`${Math.round(state.height).toLocaleString('ja-JP')} m`;$('hudAzimuth').textContent=`${Math.round(state.azimuth)}°`;$('tracking').checked=state.tracking;$('guides').checked=state.guides;updateSmokeUI();updateTypeUI();
     $('time').value=state.time;const sec=Math.floor(state.time);$('clock').textContent=`${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`;$('time').setAttribute('aria-valuetext',`${Math.floor(sec/60)}分${sec%60}秒`);
-    $('play').textContent=state.playing?'Ⅱ 一時停止':state.time>=180?'▶ もう一度':'▶ 再生';$('play').setAttribute('aria-label',state.playing?'一時停止':'再生');document.body.classList.toggle('paused',!state.playing);$('finished').hidden=state.time<180;
-    $('phase').textContent=state.time>=180?'FIN / 終幕':state.time>=150?'04 / フィナーレ':state.time>=120?'03 / 輪と球':state.time>=60?'02 / 広がり':'01 / 開幕';
+    $('play').textContent=state.playing?'Ⅱ 一時停止':state.time>=model.duration?'▶ もう一度':'▶ 再生';$('play').setAttribute('aria-label',state.playing?'一時停止':'再生');document.body.classList.toggle('paused',!state.playing);$('finished').hidden=state.time<model.duration;
+    $('phase').textContent=state.time>=model.duration?'FIN / 終幕':state.time>=model.finaleStart?'05 / フィナーレ':state.time>=180?'04 / 輪と球':state.time>=120?'03 / 色と余韻':state.time>=60?'02 / 広がり':'01 / 開幕';
     if(state.smoke){$('insightTitle').textContent='煙が手前に重なると、花火がかすんで見える。';$('insightText').textContent='同じ時刻で周回したり、風の向き・強さを変えたりして、煙の位置と見え方を比べてみましょう。';}
     else if(state.height>600){$('insightTitle').textContent='上から見ると、花火の奥行きが現れる。';$('insightText').textContent='水面と花火の高さを比べてみましょう。高度を変えても、水平距離は一定です。';}
     else if(Math.abs(Math.cos(state.azimuth*DEG))<.3){$('insightTitle').textContent='2地点が重なると、遠近の違いが見える。';$('insightText').textContent='AとBを結ぶ方向から見ると、手前の花火は大きく、奥の花火は小さく見えます。';}
@@ -676,22 +746,22 @@ details a{color:#a9d8ee;text-underline-offset:3px}
     else{$('insightTitle').textContent='距離が変わると、見かけの大きさが変わる。';$('insightText').textContent='一時停止してから回り込むと、同じ花火を別の角度から観察できます。';}
   }
   function changed(custom=true){if(state.tracking)state.pitch=centerPitch();if(custom){document.querySelectorAll('[data-preset]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false');});$('viewName').textContent='自由な視点';}dirty=true;updateUI();}
-  function setView(name){const p=presets[name];[state.distance,state.height,state.azimuth]=p;state.tracking=true;state.pitch=centerPitch();document.querySelectorAll('[data-preset]').forEach(b=>{const yes=b.dataset.preset===name;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',String(yes));});$('viewName').textContent=presetNames[name];changed(false);announce(`${presetNames[name]}の視点に変更しました`);}
+  function setView(name){const p=presets[name];[state.distance,state.height,state.azimuth]=p;state.tracking=true;state.pitch=centerPitch();document.querySelectorAll('[data-preset]').forEach(b=>{const yes=b.dataset.preset===name;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',String(yes));});$('viewName').textContent=presetNames[name];changed(false);if(mobileMode)setMobilePanel('',true);announce(`${presetNames[name]}の視点に変更しました`);}
   function move(action,dt,boost=1){const linear=dt*boost,radialSpeed=clamp(state.distance*.4,10,260);switch(action){case'near':state.distance=clamp(state.distance-radialSpeed*linear,10,3000);break;case'far':state.distance=clamp(state.distance+radialSpeed*linear,10,3000);break;case'up':state.height=clamp(state.height+180*linear,5,1600);break;case'down':state.height=clamp(state.height-180*linear,5,1600);break;case'left':state.azimuth=wrap(state.azimuth-32*linear);break;case'right':state.azimuth=wrap(state.azimuth+32*linear);break;case'lookUp':state.tracking=false;state.pitch=clamp(state.pitch+28*linear,-90,90);break;case'lookDown':state.tracking=false;state.pitch=clamp(state.pitch-28*linear,-90,90);break;}changed();}
-  function playToggle(){if(state.time>=180)state.time=0;state.playing=!state.playing;dirty=true;updateUI();announce(state.playing?'再生しました':'一時停止しました。視点を変更できます');}
-  function restart(){state.time=0;state.playing=true;dirty=true;updateUI();announce('最初から3分間の再生を開始しました');}
+  function playToggle(){if(state.time>=model.duration)state.time=0;state.playing=!state.playing;dirty=true;updateUI();announce(state.playing?'再生しました':'一時停止しました。視点を変更できます');}
+  function restart(){state.time=0;state.playing=true;dirty=true;updateUI();announce(`最初から${model.duration/60}分間の再生を開始しました`);}
   const keyActions={ArrowUp:'up',KeyW:'up',ArrowDown:'down',KeyS:'down',ArrowLeft:'left',ArrowRight:'right',KeyA:'near',KeyZ:'far',KeyE:'lookUp',KeyD:'lookDown'};
   function isEditing(target){return target&&(/^(INPUT|SELECT|TEXTAREA)$/.test(target.tagName)||target.isContentEditable);}
   document.addEventListener('keydown',e=>{if(isEditing(e.target)||e.metaKey||e.ctrlKey||e.altKey)return;if(keyActions[e.code]){e.preventDefault();keys.add(e.code);}else if(e.code==='ShiftLeft'||e.code==='ShiftRight'){keys.add(e.code);}else if(e.code==='Space'&&e.target.tagName!=='BUTTON'){e.preventDefault();if(!e.repeat)playToggle();}else if(e.code==='KeyH'&&!e.repeat){e.preventDefault();toggleSmoke(!state.smoke);}else if(e.code==='KeyR'&&!e.repeat){e.preventDefault();restart();}});
   document.addEventListener('keyup',e=>keys.delete(e.code));
-  window.addEventListener('blur',()=>{keys.clear();heldAction=null;});
-  document.addEventListener('visibilitychange',()=>{keys.clear();heldAction=null;if(document.hidden&&state.playing){state.playing=false;updateUI();announce('画面が非表示になったため一時停止しました');}lastFrame=0;});
+  window.addEventListener('blur',()=>{keys.clear();heldAction=null;clearPointers();});
+  document.addEventListener('visibilitychange',()=>{keys.clear();heldAction=null;clearPointers();if(document.hidden&&state.playing){state.playing=false;updateUI();announce('画面が非表示になったため一時停止しました');}lastFrame=0;});
   document.querySelectorAll('[data-action]').forEach(button=>{button.addEventListener('pointerdown',e=>{if(e.button!==0)return;button.setPointerCapture(e.pointerId);heldAction=button.dataset.action;holdSince=performance.now();move(heldAction,.15);});const stop=()=>{heldAction=null;};button.addEventListener('pointerup',stop);button.addEventListener('pointercancel',stop);button.addEventListener('lostpointercapture',stop);button.addEventListener('click',e=>{if(e.detail===0)move(button.dataset.action,.15);});});
   document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.preset)));
   for(const name of ['distance','height','azimuth','pitch'])$(name).addEventListener('input',()=>{state[name]=name==='azimuth'?wrap(+$(name).value):+$(name).value;if(name==='pitch')state.tracking=false;changed();});
   $('play').addEventListener('click',playToggle);$('restart').addEventListener('click',restart);$('time').addEventListener('input',()=>{state.time=+$('time').value;state.playing=false;dirty=true;updateUI();});$('time').addEventListener('change',()=>announce(`${$('clock').textContent}で一時停止しました`));$('speed').addEventListener('change',()=>{state.speed=+$('speed').value;});
   function recenter(){state.tracking=true;changed();announce('花火の中心に視線を合わせました');}
-  $('recenter').addEventListener('click',recenter);$('recenterOverlay').addEventListener('click',recenter);$('tracking').addEventListener('change',()=>{state.tracking=$('tracking').checked;changed();});
+  $('recenter').addEventListener('click',recenter);$('recenterOverlay').addEventListener('click',recenter);$('mobileRecenter').addEventListener('click',recenter);$('tracking').addEventListener('change',()=>{state.tracking=$('tracking').checked;changed();});
   $('guides').addEventListener('change',()=>{state.guides=$('guides').checked;dirty=true;updateUI();});$('grid').addEventListener('change',()=>{state.grid=$('grid').checked;dirty=true;});$('showMap').addEventListener('change',()=>{state.map=$('showMap').checked;$('mapbox').hidden=!state.map;dirty=true;});
   $('smoke').addEventListener('change',()=>toggleSmoke($('smoke').checked));
   for(const name of ['smokeDensity','windSpeed','windDirection'])$(name).addEventListener('input',()=>{state[name]=+$(name).value/(name==='smokeDensity'?100:1);dirty=true;updateUI();});
@@ -700,8 +770,48 @@ details a{color:#a9d8ee;text-underline-offset:3px}
   $('study').addEventListener('click',()=>{state.time=model.comparisonTime;state.playing=false;state.studyEventId=null;state.guides=true;setView('shore');announce('球と輪が見える時刻で一時停止しました。左右キーで回り込んで観察できます');});
   $('toggleControls').addEventListener('click',()=>{const hidden=document.body.classList.toggle('hide-controls');$('toggleControls').textContent=hidden?'操作パネルを表示':'操作パネルを隠す';$('toggleControls').setAttribute('aria-pressed',String(hidden));resize();});
   $('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{announce('このブラウザーでは全画面を利用できません');}});document.addEventListener('fullscreenchange',()=>{$('fullscreen').textContent=document.fullscreenElement?'全画面を終了':'全画面';resize();});
-  let drag=null;canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;canvas.setPointerCapture(e.pointerId);drag={x:e.clientX,y:e.clientY};});canvas.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;state.azimuth=wrap(state.azimuth-dx*.16);state.pitch=clamp(state.pitch+dy*.12,-90,90);state.tracking=false;drag={x:e.clientX,y:e.clientY};changed();});const release=()=>{drag=null;};canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);canvas.addEventListener('lostpointercapture',release);canvas.addEventListener('wheel',e=>{e.preventDefault();state.distance=clamp(state.distance+e.deltaY*clamp(state.distance*.0009,.025,.65),10,3000);changed();},{passive:false});
-  function frame(now){const elapsed=lastFrame?Math.max((now-lastFrame)/1000,0):0,dt=Math.min(elapsed,.1);lastFrame=now;const boost=keys.has('ShiftLeft')||keys.has('ShiftRight')?3:1;const actions=new Set([...keys].map(k=>keyActions[k]).filter(Boolean));for(const action of actions)move(action,dt,boost);if(heldAction&&now-holdSince>220)move(heldAction,dt);if(state.playing){state.time=Math.min(180,state.time+elapsed*state.speed);dirty=true;if(state.time>=180){state.playing=false;announce('3分間の打ち上げが終了しました');}}if(now-lastUI>100){updateUI();lastUI=now;}if(dirty)draw();requestAnimationFrame(frame);}
+  const pointers=new Map();let gesture=null;
+  function rebaseGesture(){
+    const points=[...pointers.values()];
+    gesture=points.length===1?{count:1,x:points[0].x,y:points[0].y}:points.length===2?{count:2,distance:Math.hypot(points[1].x-points[0].x,points[1].y-points[0].y)}:null;
+  }
+  function clearPointers(){
+    const ids=[...pointers.keys()];pointers.clear();gesture=null;
+    for(const id of ids)if(canvas.hasPointerCapture(id))canvas.releasePointerCapture(id);
+  }
+  canvas.addEventListener('pointerdown',e=>{
+    if(e.button!==0)return;e.preventDefault();
+    canvas.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});rebaseGesture();
+  });
+  canvas.addEventListener('pointermove',e=>{
+    if(!pointers.has(e.pointerId))return;e.preventDefault();
+    pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(pointers.size===1&&gesture?.count===1){
+      state.azimuth=wrap(state.azimuth-(e.clientX-gesture.x)*.16);
+      state.pitch=clamp(state.pitch+(e.clientY-gesture.y)*.12,-90,90);state.tracking=false;changed();
+    }else if(pointers.size===2&&gesture?.count===2){
+      const [a,b]=pointers.values(),distance=Math.hypot(b.x-a.x,b.y-a.y);
+      // Spreading two fingers approaches the scene without changing its angle.
+      if(distance>8&&gesture.distance>8){state.distance=clamp(state.distance*gesture.distance/distance,10,3000);changed();}
+    }
+    // Reset on every event, including extra fingers, so finger-count changes
+    // never reuse an old one-finger origin or an old pinch span.
+    rebaseGesture();
+  });
+  canvas.addEventListener('pointerup',e=>{
+    if(!pointers.delete(e.pointerId))return;rebaseGesture();
+    if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointercancel',clearPointers);
+  canvas.addEventListener('lostpointercapture',e=>{if(pointers.has(e.pointerId))clearPointers();});
+  canvas.addEventListener('wheel',e=>{e.preventDefault();state.distance=clamp(state.distance+e.deltaY*clamp(state.distance*.0009,.025,.65),10,3000);changed();},{passive:false});
+  mobileQuery.addEventListener('change',e=>{
+    mobileMode=e.matches;setMobilePanel('');
+    document.body.classList.remove('hide-controls');$('toggleControls').textContent='操作パネルを隠す';$('toggleControls').setAttribute('aria-pressed','false');
+    resize();lastDraw=-Infinity;
+    const focused=document.activeElement;if(focused&&focused!==document.body&&!focused.getClientRects().length)$('play').focus({preventScroll:true});
+  });
+  function frame(now){const elapsed=lastFrame?Math.max((now-lastFrame)/1000,0):0,dt=Math.min(elapsed,.1);lastFrame=now;const boost=keys.has('ShiftLeft')||keys.has('ShiftRight')?3:1;const actions=new Set([...keys].map(k=>keyActions[k]).filter(Boolean));for(const action of actions)move(action,dt,boost);if(heldAction&&now-holdSince>220)move(heldAction,dt);if(state.playing){state.time=Math.min(model.duration,state.time+elapsed*state.speed);dirty=true;if(state.time>=model.duration){state.playing=false;announce(`${model.duration/60}分間の打ち上げが終了しました`);}}if(now-lastUI>100){updateUI();lastUI=now;}if(dirty&&(!mobileMode||now-lastDraw>=1000/30-.5)){draw();lastDraw=now;}requestAnimationFrame(frame);}
   new ResizeObserver(resize).observe($('scene'));state.pitch=centerPitch();resize();updateUI();requestAnimationFrame(frame);
   // A small read-only inspection hook makes the coordinate system auditable.
   window.Hanabi = Object.freeze({getState:()=>({...state}),getCamera:()=>({...camera,right:[...camera.right],up:[...camera.up],forward:[...camera.forward]}),project:(x,y,z)=>project(x,y,z),model});
