@@ -47,7 +47,7 @@ check('inspection times contain the selected type', () => {
 });
 
 check('arbitrary forward/backward seeks are deterministic', () => {
-  const times = [0, 8.125, 27.937, 64.3, 96.5, 151.777, 172.431, 179.999];
+  const times = [0, 8.125, 27.937, 64.3, 96.5, 151.777, 172.431, 179.999, 211.3, 256.91, 279.51, 294.1, 299.999];
   const snapshots = times.map(time => json(model.sample(time, options)));
   for (let i = times.length - 1; i >= 0; i--) assert.equal(json(model.sample(times[i], options)), snapshots[i]);
   model.sample(94.12, { windSpeed: 12, windDirection: 270 });
@@ -77,14 +77,35 @@ check('sampled positions and alpha stay finite across the complete show', () => 
   measurements.peakRockets = peakRockets;
 });
 
-check('three-minute endpoint clears active fireworks', () => {
-  near(model.duration, 180, 0, 'show duration');
-  for (const time of [180, 181, 999]) {
+check('five-minute endpoint clears active fireworks', () => {
+  near(model.duration, 300, 0, 'show duration');
+  for (const time of [300, 301, 999]) {
     const sample = model.sample(time, options);
     assert.equal(sample.rockets.length, 0);
     assert.equal(sample.sparks.length, 0);
     assert.equal(sample.bursts.length, 0);
   }
+});
+
+check('added middle launches and both-site finale fill the five-minute programme', () => {
+  for (let start = 0; start < 280; start += 20) {
+    for (const site of model.sites) {
+      assert(model.events.some(event => event.site === site.id && event.launch >= start && event.launch < start + 20),
+        `no launch from ${site.id} between ${start} and ${start + 20} s`);
+    }
+  }
+  for (const type of expectedTypes) {
+    assert(model.events.some(event => event.type === type && event.launch >= 180), `${type} missing from the added programme`);
+  }
+  const finale = model.events.filter(event => event.finale);
+  near(Math.min(...finale.map(event => event.launch)), model.finaleStart, 1e-9, 'finale cue');
+  assert(finale.every(event => event.launch >= 260), 'finale begins before the final minute');
+  for (const time of [181, 211, 241, 271, 290]) {
+    const snapshot = model.sample(time, options);
+    assert(snapshot.sparks.length > 0, `no live fireworks during added programme at ${time} s`);
+  }
+  measurements.eventCount = model.events.length;
+  measurements.finaleStart = model.finaleStart;
 });
 
 check('zero-drag numerical trajectory agrees with analytic gravity', () => {
@@ -248,7 +269,13 @@ check('rendered star coordinates follow the same integrated physical trajectorie
 check('scheduled fireworks can finish burning naturally before show cutoff', () => {
   const latestLifetimeEnd = Math.max(...model.events.map(event => event.burst + event.life));
   assert(latestLifetimeEnd < model.duration, `the show truncates a physical burn at ${latestLifetimeEnd}`);
+  assert(latestLifetimeEnd >= model.duration - 7 && latestLifetimeEnd <= model.duration - 4,
+    `expected about five seconds of natural afterglow after the final sparks, got ${model.duration - latestLifetimeEnd}`);
+  const settled = model.sample(latestLifetimeEnd + 0.01, options);
+  assert.equal(settled.sparks.length, 0, 'sparks should expire naturally before endpoint clamping');
+  assert.equal(settled.rockets.length, 0, 'no launch should remain during the closing pause');
   measurements.latestLifetimeEnd = latestLifetimeEnd;
+  measurements.closingPauseSeconds = model.duration - latestLifetimeEnd;
 });
 
 const report = { passed: true, checks, measurements };

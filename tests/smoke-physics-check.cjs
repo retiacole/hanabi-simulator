@@ -34,7 +34,7 @@ assert.equal(JSON.stringify(sample(15)),direct,'seeking has no integration histo
 assert.equal(sample(77).filter(p=>p.id.includes('one')).length,0,'finite rendering lifetime');
 const retiring=sample(75,{density:5}).find(p=>p.id.endsWith('-one'));
 assert(!retiring||retiring.opacity<0.002,'old puff fades smoothly to invisibility before removal');
-for(const time of [0,1,1.1,5,70,180]) for(const puff of sample(time,{density:5})) {
+for(const time of [0,1,1.1,5,70,180,300]) for(const puff of sample(time,{density:5})) {
   for(const key of ['x','y','z','radius','opacity']) assert(Number.isFinite(puff[key]),key);
   assert(puff.radius>0&&puff.opacity>0&&puff.opacity<1);
 }
@@ -45,7 +45,8 @@ if(!process.argv.includes('--unit-only')) {
   vm.runInContext(smokeCode, real);
   assert.equal(typeof real.FireworksModel.smokeSources,'function');
   let maxPuffs=0;
-  for(const time of [10,30,60,100,140,165,180]) {
+  const sampleTimes = [10,30,60,100,140,165,180,210,240,270,295,300];
+  for(const time of sampleTimes) {
     const puffs=real.HanabiSmoke.sample(time,real.FireworksModel.events,{windSpeed:12,windDirection:270,density:5});
     maxPuffs=Math.max(maxPuffs,puffs.length);
     assert(puffs.length>0&&puffs.length<=768);
@@ -59,6 +60,13 @@ if(!process.argv.includes('--unit-only')) {
   const matching=shortly.find(p=>p.id===`${event.id}-smoke-${source.id}`);
   assert(matching,'a smoke puff is present at the child burst time');
   assert(Math.hypot(matching.x-source.x,matching.y-source.y,matching.z-source.z)<2,'source location agrees with the physical child');
-  report.integration={sampleTimes:[10,30,60,100,140,165,180],maxPuffs,childSource:true};
+  const lateSmoke=real.HanabiSmoke.sample(295,real.FireworksModel.events,{windSpeed:12,windDirection:270,density:5});
+  assert(lateSmoke.some(puff=>real.FireworksModel.events.find(event=>event.id===puff.eventId).launch>240),
+    'late smoke must come from the current finale, not a time clamped at 180 seconds');
+  const lateSnapshot=JSON.stringify(lateSmoke);
+  real.HanabiSmoke.sample(80,real.FireworksModel.events,{windSpeed:12,windDirection:270,density:5});
+  assert.equal(JSON.stringify(real.HanabiSmoke.sample(295,real.FireworksModel.events,{windSpeed:12,windDirection:270,density:5})),lateSnapshot,
+    'backward seeking must preserve the five-minute smoke state');
+  report.integration={sampleTimes,maxPuffs,childSource:true,lateFinaleSources:true};
 }
 console.log(JSON.stringify(report,null,2));
