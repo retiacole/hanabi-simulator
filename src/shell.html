@@ -25,7 +25,7 @@ SOFTWARE.
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>Hanabi Simulator｜花火の3D観察室</title>
 <style>
@@ -38,29 +38,64 @@ SOFTWARE.
 .smokeheading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 12px}.smokeheading .switch{font-size:12px;color:#e1d4c3}.smokeheading span{font-size:10px;color:#92a4bd}.smokecontrols .control{margin-bottom:13px}.smokecontrols .controlhead output{font-size:15px}.smokecontrols .controlhead label{font-size:11px}.smokecontrols .control input{margin-bottom:3px}.smokenote{font-size:10px;color:#99acc4;line-height:1.8;margin:8px 0 14px}.smokestatus{margin-top:8px;font-size:10px;color:#c4c9d1}.windcompass{display:flex;justify-content:space-between;color:#8fa4bf;font-size:9px;margin:2px 0 9px}.smokecontrols[hidden],.smokestatus[hidden]{display:none}
 .typepicker{display:grid;gap:9px;margin:0 0 19px}.typepicker label{font-size:12px;color:#bac8dc}.typepicker select{width:100%;min-width:0;background:#182336;color:var(--text);border:1px solid #42516a;border-radius:7px;padding:10px;font-size:12px}.typedescription{font-size:11px;color:#b5c5da;line-height:1.8;margin:0;min-height:40px}.typepicker button{width:100%;font-size:12px}.activetypes{max-width:480px;color:#bdc9d8;font-size:11px;line-height:1.7;margin-top:8px;text-shadow:0 1px 5px #000}@media(max-width:700px){.activetypes{max-width:235px;font-size:10px}.typedescription{min-height:0}}
 details a{color:#a9d8ee;text-underline-offset:3px}
+.mobile-only{display:none}.panel-group{display:contents}
+@media (max-width:700px), (max-height:500px) and (pointer:coarse){
+ html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+ body{display:flex;flex-direction:column}
+ header{height:calc(58px + env(safe-area-inset-top));min-height:calc(58px + env(safe-area-inset-top));padding:calc(10px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left))}
+ .logotype{font-size:20px;margin-bottom:3px;letter-spacing:.025em}.subtitle{font-size:9px}.topnote{display:none}
+ .workspace,.hide-controls .workspace{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto auto;height:calc(100vh - 58px - env(safe-area-inset-top));height:calc(100dvh - 58px - env(safe-area-inset-top));min-height:0;flex:1}
+ .main{min-height:0;grid-row:1}.scene,.hide-controls .scene{height:auto;min-height:0;flex:1}
+ .viewtop{top:12px;left:max(14px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));gap:6px}.viewtop>div:first-child{min-width:0}.eyebrow,.viewtitle,.pausedpill,.viewactions>#toggleControls,.viewactions>#fullscreen{display:none}
+ .livecoords{margin:0;max-width:none;gap:5px 12px;font-size:10px;line-height:1.8}.livecoords strong{margin-left:3px}.activetypes{max-width:260px;font-size:10px;margin-top:3px;line-height:1.5}
+ .viewactions{flex:none;display:flex;flex-direction:row}.viewactions .mobile-only{display:block;min-height:44px;padding:8px 10px;font-size:11px}
+ .viewbottom{left:14px;right:14px;bottom:12px}.scenehint,.mapbox{display:none!important}.gesturehint{display:block;color:#9eafc6;font-size:10px;line-height:1.5;text-shadow:0 1px 5px #000}
+ .timeline{padding:7px max(12px,env(safe-area-inset-right)) 5px max(12px,env(safe-area-inset-left));border-top-color:#263348}
+ .playrow{display:grid;grid-template-columns:minmax(78px,1fr) 44px auto 70px;gap:7px;align-items:center}.playrow .primary{min-width:0;padding:8px 4px;font-size:12px;min-height:44px}.playrow #restart{width:44px;min-height:44px;padding:8px;font-size:20px}
+ .playrow .timecode{grid-row:auto;min-width:0;margin:0;font-size:12px;white-space:nowrap}.timecode span{font-size:10px}.playrow .speed{grid-row:auto;width:70px;min-height:44px;font-size:12px;padding:7px 5px;justify-self:stretch}.phase,.timelabels{display:none}.scrub{height:28px;margin:3px 0 0}
+ .mobile-nav{display:grid;grid-row:3;grid-template-columns:repeat(3,1fr);gap:7px;background:#101b2c;border-top:1px solid #304059;padding:7px max(12px,env(safe-area-inset-right)) calc(7px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}
+ .mobile-nav button{min-height:44px;font-size:12px;background:#17263b;border-color:#35445a}.mobile-nav button[aria-expanded=true]{color:#ffddb0;background:#34404b;border-color:var(--accent)}
+ .aside,.hide-controls .aside{display:none;grid-row:2;min-height:0;height:min(40dvh,330px);overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:0 max(16px,env(safe-area-inset-right)) 16px max(16px,env(safe-area-inset-left));border-left:0;border-top:1px solid #526079}
+ .mobile-panel-open .aside{display:block}.mobile-panelhead{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#101928;z-index:2;padding:8px 0;margin-bottom:5px}.mobile-panelhead strong{font-size:12px;font-weight:500;color:#d7dfeb}.mobile-panelhead button{min-height:44px;font-size:12px;padding:8px 12px}
+ .panel-group{display:none}body[data-mobile-panel=view] #panelView,body[data-mobile-panel=shapes] #panelShapes,body[data-mobile-panel=weather] #panelWeather{display:block}
+ .desktop-only,.aside>.sectionline{display:none!important}.asideheading{margin:10px 0}.asideheading h2{font-size:12px}.asideheading span{font-size:9px}.presetgrid{max-width:none;gap:5px}.presetgrid button{min-height:44px;font-size:11px}
+ .controlsgrid{display:grid;grid-template-columns:1fr;gap:0}.controlsgrid>.control:nth-child(n+3){display:none}.control{margin:14px 0}.controlhead{margin-bottom:0}.controlhead label{font-size:12px}.controlhead output{font-size:16px}.control input[type=range]{height:38px;margin:0;touch-action:pan-y}.controlbuttons{gap:8px}.controlbuttons button{min-height:44px;font-size:12px;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none}.controlbuttons kbd,.controlbuttons span,.controlnote,.sectionline{display:none}
+ .followrow{margin-top:12px}.followrow button{min-height:44px}.switch{min-height:44px;font-size:12px;gap:9px}.switch input{width:20px;height:20px}.switch kbd{display:none}.followrow .switch{font-size:11px}
+ .typepicker{gap:10px;margin-bottom:12px}.typepicker select{font-size:16px;min-height:44px;padding:10px}.typepicker button{min-height:44px}.typedescription{font-size:12px;line-height:1.8;min-height:0}.mobile-modelnote{display:block;font-size:10px;color:#94a7c0;line-height:1.8;margin:10px 0 0}
+ .smokeheading{margin:0 0 10px}.smokeheading span{font-size:9px}.smokecontrols .control{margin:10px 0}.smokecontrols .controlhead label{font-size:12px}.smokecontrols .control input{margin:0}.smokenote{font-size:10px;line-height:1.7}.windcompass{font-size:9px}.banner{padding:12px 16px}.banner strong{font-size:15px}.banner span{font-size:11px}.banner button{min-height:44px}
+}
+@media (max-width:360px){.livecoords{font-size:9px;gap:4px 8px}.activetypes{max-width:200px;font-size:9px}.gesturehint{font-size:9px}.playrow{gap:5px;grid-template-columns:minmax(72px,1fr) 42px auto 64px}.playrow .speed{width:64px}.playrow .timecode{font-size:11px}.presetgrid{grid-template-columns:1fr 1fr}}
+@media (min-width:560px) and (max-height:500px) and (pointer:coarse){
+ header{height:calc(42px + env(safe-area-inset-top));min-height:calc(42px + env(safe-area-inset-top));padding-top:calc(7px + env(safe-area-inset-top));padding-bottom:7px}.logotype{font-size:18px;margin:0}.subtitle{display:none}
+ .workspace,.hide-controls .workspace{height:calc(100dvh - 42px - env(safe-area-inset-top));grid-template-rows:minmax(0,1fr) auto}.main{grid-row:1;grid-column:1}.mobile-panel-open .workspace{grid-template-columns:minmax(0,1fr) min(42vw,320px)}
+ .aside,.hide-controls .aside{grid-row:1;grid-column:2;height:auto;border-top:0;border-left:1px solid #526079}.mobile-nav{grid-column:1/-1;grid-row:2;padding-top:5px;padding-bottom:calc(5px + env(safe-area-inset-bottom))}.mobile-nav button{min-height:44px}.timeline{padding-top:4px;padding-bottom:1px}.scrub{height:22px;margin:0}.viewtop{top:8px}.viewbottom{bottom:5px}.mobile-panel-open .activetypes{display:none}
+}
+
 </style>
 </head>
 <body>
 <header>
  <div class="brand"><h1 class="logotype">Hanabi Simulator</h1><div class="subtitle">花火の3D観察室 · ふたつの打上地点、自由な視点</div></div>
- <div class="topnote"><span class="tag">3 MINUTES / 2 LAUNCH SITES</span><br>東京湾をイメージした、立体の実験場</div>
+ <div class="topnote"><span class="tag">5 MINUTES / 2 LAUNCH SITES</span><br>東京湾をイメージした、立体の実験場</div>
 </header>
 <div class="workspace">
  <main class="main">
   <div class="scene" id="scene">
    <canvas id="world" role="img" aria-label="2地点から打ち上がる三次元の花火。操作パネルとキーボードで視点を変更できます。">Canvas対応ブラウザーで開いてください。</canvas>
-   <div class="viewtop"><div><div class="eyebrow">OBSERVATION / PERSPECTIVE</div><div class="viewtitle">花火を、立体で見る。<small id="viewName">湾岸から</small></div><div class="livecoords"><span>距離<strong id="hudDistance">1,100 m</strong></span><span>高度<strong id="hudHeight">25 m</strong></span><span>方位<strong id="hudAzimuth">0°</strong></span></div><div class="activetypes" id="activeTypes"></div><div class="pausedpill" id="pausePill">Ⅱ 一時停止中 · 視点は自由に動かせます</div></div><div class="viewactions"><button id="toggleControls" aria-pressed="false">操作パネルを隠す</button><button id="fullscreen">全画面</button></div></div>
-   <div class="viewbottom"><div class="scenehint"><strong id="insightTitle">距離が変わると、見かけの大きさが変わる。</strong><span id="insightText">一時停止してから回り込むと、同じ花火を別の角度から観察できます。</span><div class="smokestatus" id="smokeStatus" hidden></div><div class="muted">ドラッグ：周回＋視線の上下 / ホイール：距離</div></div><div class="mapbox" id="mapbox"><div class="maphead"><span>上から見た位置</span><span>＋Z ↑</span></div><canvas id="map" width="348" height="280" role="img" aria-label="上空図。AとBは打ち上げ地点、三角は観測者です。風の流れる向きを矢印で表示します。"></canvas><div class="mapcaption">A・B：打上地点　△：観測者</div></div></div>
-   <div id="finished" class="banner" hidden><strong>3分間の打ち上げが終了しました</strong><span>時刻バーを戻して、同じ瞬間を違う視点から。</span></div>
+   <div class="viewtop"><div><div class="eyebrow">OBSERVATION / PERSPECTIVE</div><div class="viewtitle">花火を、立体で見る。<small id="viewName">湾岸から</small></div><div class="livecoords"><span>距離<strong id="hudDistance">1,100 m</strong></span><span>高度<strong id="hudHeight">25 m</strong></span><span>方位<strong id="hudAzimuth">0°</strong></span></div><div class="activetypes" id="activeTypes"></div><div class="pausedpill" id="pausePill">Ⅱ 一時停止中 · 視点は自由に動かせます</div></div><div class="viewactions"><button id="mobileRecenter" class="mobile-only" aria-label="花火の中心を見る">中心へ</button><button id="toggleControls" aria-pressed="false">操作パネルを隠す</button><button id="fullscreen">全画面</button></div></div>
+   <div class="viewbottom"><div class="mobile-only gesturehint">1本指で周回・見上げる角度 ／ 2本指で近づく・離れる</div><div class="scenehint"><strong id="insightTitle">距離が変わると、見かけの大きさが変わる。</strong><span id="insightText">一時停止してから回り込むと、同じ花火を別の角度から観察できます。</span><div class="smokestatus" id="smokeStatus" hidden></div><div class="muted">ドラッグ：周回＋視線の上下 / ホイール：距離</div></div><div class="mapbox" id="mapbox"><div class="maphead"><span>上から見た位置</span><span>＋Z ↑</span></div><canvas id="map" width="348" height="280" role="img" aria-label="上空図。AとBは打ち上げ地点、三角は観測者です。風の流れる向きを矢印で表示します。"></canvas><div class="mapcaption">A・B：打上地点　△：観測者</div></div></div>
+   <div id="finished" class="banner" hidden><strong>5分間の打ち上げが終了しました</strong><span>時刻バーを戻して、同じ瞬間を違う視点から。</span></div>
    <div id="offscreen" class="banner" hidden><span>花火の中心が画面の外にあります</span><br><button id="recenterOverlay">中心を見る</button></div>
   </div>
   <section class="timeline" aria-label="再生と時間">
-   <div class="playrow"><button class="primary" id="play" aria-label="一時停止">Ⅱ 一時停止</button><button id="restart" aria-label="最初から再生">↺ 最初から</button><div class="timecode"><output id="clock">0:00</output><span> / 3:00</span></div><span class="phase" id="phase">01 / 開幕</span><label class="sr-only" for="speed">再生速度</label><select class="speed" id="speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1× 速度</option></select></div>
-   <label class="sr-only" for="time">観察する時刻（秒）</label><input class="scrub" id="time" type="range" min="0" max="180" value="0" step="0.05" aria-valuetext="0分0秒">
-   <div class="timelabels"><span>0:00 開幕</span><span>1:00 広がり</span><span>2:00 輪と球</span><span>3:00 終幕</span></div>
+   <div class="playrow"><button class="primary" id="play" aria-label="一時停止">Ⅱ 一時停止</button><button id="restart" aria-label="最初から再生">↺<span class="desktop-only"> 最初から</span></button><div class="timecode"><output id="clock">0:00</output><span> / 5:00</span></div><span class="phase" id="phase">01 / 開幕</span><label class="sr-only" for="speed">再生速度</label><select class="speed" id="speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1.0×</option><option value="1.5">1.5×</option><option value="2">2.0×</option></select></div>
+   <label class="sr-only" for="time">観察する時刻（秒）</label><input class="scrub" id="time" type="range" min="0" max="300" value="0" step="0.05" aria-valuetext="0分0秒">
+   <div class="timelabels"><span>0:00 開幕</span><span>1:00 広がり</span><span>3:00 輪と球</span><span>5:00 終幕</span></div>
   </section>
  </main>
  <aside class="aside" aria-label="観測条件の操作パネル">
+  <div class="mobile-only mobile-panelhead"><strong>観察の設定</strong><button id="mobileClose" aria-label="設定を閉じる">閉じる ×</button></div>
+  <div class="panel-group" id="panelView">
   <div class="asideheading"><h2>観測する場所</h2><span>VIEWPOINT</span></div>
   <div class="presetgrid" aria-label="視点プリセット"><button data-preset="shore" class="active" aria-pressed="true">湾岸</button><button data-preset="air" aria-pressed="false">上空</button><button data-preset="side" aria-pressed="false">真横</button><button data-preset="near" aria-pressed="false">花火のそば</button></div>
   <hr class="sectionline">
@@ -72,6 +107,8 @@ details a{color:#a9d8ee;text-underline-offset:3px}
   </div>
   <div class="followrow"><button id="recenter">◎ 中心を見る</button><label class="switch"><input id="tracking" type="checkbox" checked>中心を追う</label></div>
   <hr class="sectionline">
+  </div>
+  <div class="panel-group" id="panelShapes">
   <div class="asideheading"><h2>花火の形を選ぶ</h2><span id="typeCount">10 TYPES</span></div>
   <section class="typepicker" aria-label="花火の種類別の観察">
    <label for="fireworkType">観察する種類</label><select id="fireworkType" aria-describedby="shapeDescription"></select>
@@ -79,8 +116,11 @@ details a{color:#a9d8ee;text-underline-offset:3px}
    <button id="inspectType">この形が開く時刻で一時停止</button>
    <p class="controlnote">演出中の対応時刻に移動します。視点を回して立体の違いを観察できます。</p>
   </section>
-  <div class="asideheading"><h2>立体を見つける</h2><span>EXPLORE</span></div>
-  <div class="extras"><label class="switch"><input id="guides" type="checkbox">粒の配置・軌道の補助線</label><label class="switch"><input id="grid" type="checkbox" checked>水面グリッド</label><label class="switch"><input id="showMap" type="checkbox" checked>位置図</label></div>
+  <div class="asideheading desktop-only"><h2>立体を見つける</h2><span>EXPLORE</span></div>
+  <div class="extras desktop-only"><label class="switch"><input id="guides" type="checkbox">粒の配置・軌道の補助線</label><label class="switch"><input id="grid" type="checkbox" checked>水面グリッド</label><label class="switch"><input id="showMap" type="checkbox" checked>位置図</label></div>
+  <p class="mobile-only mobile-modelnote">10種類の花火を、同じ瞬間で止めて観察できます。運動は物理法則に沿った簡易モデルで、実物の測定値による再現ではありません。</p>
+  </div>
+  <div class="panel-group" id="panelWeather">
   <div class="smokeheading"><label class="switch"><input id="smoke" type="checkbox" aria-controls="smokeControls">煙を再現する <kbd>H</kbd></label><span>SMOKE & WIND</span></div>
   <div class="smokecontrols" id="smokeControls" hidden>
    <section class="control"><div class="controlhead"><label for="smokeDensity">煙の濃さ</label><output id="smokeDensityValue" for="smokeDensity">100<small>%</small></output></div><input id="smokeDensity" type="range" min="20" max="500" step="10" value="100"></section>
@@ -90,11 +130,19 @@ details a{color:#a9d8ee;text-underline-offset:3px}
    <section class="control"><div class="controlhead"><label for="windDirection">風の向き（吹いていく先）</label><output id="windDirectionValue" for="windDirection">90<small>°</small></output></div><input id="windDirection" type="range" min="0" max="360" step="5" value="90"><div class="windcompass"><span>0° ↑ ＋Z</span><span>90° → ＋X</span><span>180° ↓ −Z</span><span>270° ← −X</span></div></section>
    <p class="smokenote">一定の風を全時間に適用します。設定を変えると、打ち上げから花火と煙を計算し直します。0 m/sで無風にできます。</p>
   </div>
+  </div>
+  <div class="desktop-only">
   <button id="study" style="width:100%">球と輪を止めて観察する</button>
   <div class="guidecallout"><strong>同じ瞬間を、違う場所から。</strong><br>形を選んで一時停止 → 左右キーで周回。小花の群れの奥行き、横から見た輪の薄さ、風による粒の流れ方を観察できます。</div>
-  <details><summary>操作ガイド・このモデルについて</summary><p><kbd>Space</kbd> 再生／停止　<kbd>R</kbd> 最初から<br><kbd>H</kbd> 煙の表示切替<br><kbd>Shift</kbd>＋移動キーで速く移動<br><kbd>A</kbd> 近づく　<kbd>Z</kbd> 離れる<br><kbd>↑</kbd> / <kbd>W</kbd> 上昇　<kbd>↓</kbd> / <kbd>S</kbd> 下降<br><kbd>←</kbd> / <kbd>→</kbd> 周回　<kbd>E</kbd> / <kbd>D</kbd> 視線の上下</p><p>スライダーの操作中は矢印キーでその値を変更できます。スライダー以外にフォーカスを移すと、上記のショートカットに戻ります。</p><p>「中心を追う」は高度300 mの中点に視線を合わせます。E／Dやドラッグで角度を変えると追尾が解除されます。ボタンは長押しできます。「花火のそば」でB地点の近く・高度300 mへ移動します。Aキーやホイールでさらに接近でき、左右キーでA地点側にも回り込めます。近距離では移動がゆっくりになります。</p><p>花火は10種類。玉・光る粒・尾の火花に三次元の位置と速度があり、重力（9.81 m/s²）と、風に対する速度の二乗に比例する空気抵抗を計算します。玉は打ち上げ後に重力と空気抵抗を受け、開花時には玉の速度が粒へ引き継がれます。小花の群れは飛び出した子玉が時間差で開き、しだれの尾は移動する粒から放たれる火花で表現します。扇形は打上地点から斜めに飛ぶ光の粒の列です。補助線は、粒の配置や計算された飛行軌道を表示します。</p><p>2地点の間隔は460 m。東京湾花火大会の雰囲気を参考にした架空の配置・演出で、実際の地形や開催プログラムの再現ではありません。水面の反射は演出的な近似です。音はありません。</p><p>煙は実際に計算された飛行・開花位置から発生し、風に流され、上昇・拡散して薄くなる簡易モデルです。「濃さ」は煙の光学的な量を変え、500%でも不透明さには上限があります。風の方向は「吹いていく先」で、通常の気象の風向（吹いてくる方角）とは逆です。3分の終了時は残煙も静止します。</p><p>運動は物理法則に沿って計算しますが、実物の測定値で検証した再現ではありません。開花の初速度・燃焼時間・色は種類ごとの仮定です。燃焼による粒の変化は近似し、爆発の圧力や燃焼化学、複雑な乱流、煙の散乱光は精密には解いていません。煙の表示と水面反射も見え方の近似です。</p><p>参照：<a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/" target="_blank" rel="noopener">NASAの抗力式</a> ／ <a href="https://www.hanabi-jpa.jp/uchiage/structure.html" target="_blank" rel="noopener">日本煙火協会の花火解説</a></p><p>標準速度で、燃え尽きた後の余韻を含め3分間。0.5×／0.25×は観察用のスロー再生です。別のタブに移動すると自動で一時停止します。</p></details>
+  <details><summary>操作ガイド・このモデルについて</summary><p><kbd>Space</kbd> 再生／停止　<kbd>R</kbd> 最初から<br><kbd>H</kbd> 煙の表示切替<br><kbd>Shift</kbd>＋移動キーで速く移動<br><kbd>A</kbd> 近づく　<kbd>Z</kbd> 離れる<br><kbd>↑</kbd> / <kbd>W</kbd> 上昇　<kbd>↓</kbd> / <kbd>S</kbd> 下降<br><kbd>←</kbd> / <kbd>→</kbd> 周回　<kbd>E</kbd> / <kbd>D</kbd> 視線の上下</p><p>スライダーの操作中は矢印キーでその値を変更できます。スライダー以外にフォーカスを移すと、上記のショートカットに戻ります。</p><p>「中心を追う」は高度300 mの中点に視線を合わせます。E／Dやドラッグで角度を変えると追尾が解除されます。ボタンは長押しできます。「花火のそば」でB地点の近く・高度300 mへ移動します。Aキーやホイールでさらに接近でき、左右キーでA地点側にも回り込めます。近距離では移動がゆっくりになります。</p><p>花火は10種類。玉・光る粒・尾の火花に三次元の位置と速度があり、重力（9.81 m/s²）と、風に対する速度の二乗に比例する空気抵抗を計算します。玉は打ち上げ後に重力と空気抵抗を受け、開花時には玉の速度が粒へ引き継がれます。小花の群れは飛び出した子玉が時間差で開き、しだれの尾は移動する粒から放たれる火花で表現します。扇形は打上地点から斜めに飛ぶ光の粒の列です。補助線は、粒の配置や計算された飛行軌道を表示します。</p><p>2地点の間隔は460 m。東京湾花火大会の雰囲気を参考にした架空の配置・演出で、実際の地形や開催プログラムの再現ではありません。水面の反射は演出的な近似です。音はありません。</p><p>煙は実際に計算された飛行・開花位置から発生し、風に流され、上昇・拡散して薄くなる簡易モデルです。「濃さ」は煙の光学的な量を変え、500%でも不透明さには上限があります。風の方向は「吹いていく先」で、通常の気象の風向（吹いてくる方角）とは逆です。5分の終了時は残煙も静止します。</p><p>運動は物理法則に沿って計算しますが、実物の測定値で検証した再現ではありません。開花の初速度・燃焼時間・色は種類ごとの仮定です。燃焼による粒の変化は近似し、爆発の圧力や燃焼化学、複雑な乱流、煙の散乱光は精密には解いていません。煙の表示と水面反射も見え方の近似です。</p><p>参照：<a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/" target="_blank" rel="noopener">NASAの抗力式</a> ／ <a href="https://www.hanabi-jpa.jp/uchiage/structure.html" target="_blank" rel="noopener">日本煙火協会の花火解説</a></p><p>標準速度で、燃え尽きた後の余韻を含め5分間。0.25×／0.5×のスロー再生と、1.5×／2.0×の早送りを選べます。別のタブに移動すると自動で一時停止します。</p></details>
   <div class="footerlabel">Hanabi Simulator · 花火の3D観察室<br>オフライン対応 · このHTMLだけで動作します</div>
+  </div>
  </aside>
+ <nav class="mobile-only mobile-nav" id="mobileNav" aria-label="スマホの操作メニュー">
+  <button data-mobile-panel="view" aria-controls="panelView" aria-expanded="false">◎ 視点</button>
+  <button data-mobile-panel="shapes" aria-controls="panelShapes" aria-expanded="false">✳ 花火</button>
+  <button data-mobile-panel="weather" aria-controls="panelWeather" aria-expanded="false">≈ 煙・風</button>
+ </nav>
 </div>
 <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
 <script>

@@ -85,7 +85,7 @@
   function sample(time, events, options = {}) {
     if (!Array.isArray(events)) return [];
     options = options || {};
-    const t = clamp(finite(time, 0), 0, 180);
+    const t = clamp(finite(time, 0), 0, finite(root.FireworksModel && root.FireworksModel.duration, 300));
     const density = clamp(finite(options.density, 1), 0, 5);
     if (density === 0) return [];
     const wind = windSettings(options);

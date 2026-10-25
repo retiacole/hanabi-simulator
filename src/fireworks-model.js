@@ -8,7 +8,7 @@
  */
 (function (root) {
   'use strict';
-  const DURATION = 180, TAU = Math.PI * 2, GRAVITY = 9.81, STEP = 1 / 90;
+  const DURATION = 300, FINALE_START = 266, TAU = Math.PI * 2, GRAVITY = 9.81, STEP = 1 / 90;
   const SITES = [{ id: 'A', x: -230, y: 0, z: 0 }, { id: 'B', x: 230, y: 0, z: 0 }];
   const PALETTE = [[255,191,76], [103,226,255], [255,115,164], [166,136,255], [149,255,180], [255,235,179]];
   const TYPES = [
@@ -108,7 +108,13 @@
   for(let t=31.1,v=0;t<75;t+=3.05,v++){addEvent(v%2,t,sequence++,false);if(v%3!==1)addEvent((v+1)%2,t+.64,sequence++,false);}
   for(let t=76,v=0;t<120;t+=2.65,v++){addEvent(v%2,t,sequence++,false);if(v%2===0)addEvent((v+1)%2,t+.37,sequence++,false);}
   for(let t=121;t<145;t+=2.7){addEvent(0,t,sequence++,false);addEvent(1,t+.2,sequence++,false);}
-  for(let t=146;t<=159.001;t+=1.1){addEvent(0,t,sequence++,true);addEvent(1,t+.22,sequence++,true);}
+  // Keep every shell's flight and burn durations unchanged. The longer show
+  // adds launches through the middle, then moves the same finale 120 s later.
+  // Create that finale first so its deterministic seeds and shapes stay stable.
+  for(let t=FINALE_START;t<=FINALE_START+13.001;t+=1.1){addEvent(0,t,sequence++,true);addEvent(1,t+.22,sequence++,true);}
+  for(let t=146,v=0;t<196;t+=3.05,v++){addEvent(v%2,t,sequence++,false);if(v%3!==1)addEvent((v+1)%2,t+.64,sequence++,false);}
+  for(let t=197,v=0;t<239;t+=2.65,v++){addEvent(v%2,t,sequence++,false);if(v%2===0)addEvent((v+1)%2,t+.37,sequence++,false);}
+  for(let t=240;t<265;t+=2.7){addEvent(0,t,sequence++,false);addEvent(1,t+.2,sequence++,false);}
   events.sort((a,b)=>a.launch-b.launch);
   const eventMap=new Map(events.map(e=>[e.id,e]));
   function eventOf(value){return typeof value==='string'?eventMap.get(value):value;}
@@ -258,6 +264,6 @@
     for(const e of events){if(e.type!==type.id||e.burst>130)continue;const t=e.burst+offset;let score=e.launch*.002;for(const other of events){if(other===e||t<other.burst||t>other.burst+other.life)continue;score+=(other.site===e.site?3:.6)*(1-(t-other.burst)/other.life);}if(score<bestScore){best=e;bestScore=score;}}
     studyTimes[type.id]={time:best.burst+offset,eventId:best.id,azimuth:best.studyAzimuth};}
   const comparisonTime=Math.max(events[0].burst,events[1].burst)+1.5;
-  root.FireworksModel={sites:SITES,duration:DURATION,types:TYPES,events,studyTimes,comparisonTime,sample,sourceAt,smokeSources,
+  root.FireworksModel={sites:SITES,duration:DURATION,finaleStart:FINALE_START,types:TYPES,events,studyTimes,comparisonTime,sample,sourceAt,smokeSources,
     physics:{step:STEP,gravity:GRAVITY,dragLaw:'quadratic relative-air velocity',integrate,acceleration,eventState}};
 })(typeof window!=='undefined'?window:globalThis);
