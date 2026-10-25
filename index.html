@@ -1,0 +1,712 @@
+<!doctype html>
+<!--
+MIT License
+
+Copyright (c) 2026 Hanabi Simulator contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Hanabi Simulator｜花火の3D観察室</title>
+<style>
+:root{--bg:#080e1a;--panel:#101928;--line:#263348;--muted:#a0aec1;--text:#edf2f8;--accent:#f3c68b;--blue:#8cccf2;--pink:#f0a3bf;color-scheme:dark;font-family:Inter,"Noto Sans JP","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-size:13px}button,input,select{font:inherit}button{cursor:pointer;color:inherit;background:#182336;border:1px solid #334157;border-radius:7px;padding:9px 12px;transition:background .15s,border-color .15s}button:hover{background:#23334b;border-color:#74839a}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}button:disabled{opacity:.4;cursor:default}button.active,button[aria-pressed=true]{background:#34404b;border-color:var(--accent);color:#ffddb0}button.primary{background:var(--accent);border-color:var(--accent);color:#162031;font-weight:700}button.primary:hover{background:#ffdbab}button.quiet{background:transparent}kbd{font:10px ui-monospace,monospace;color:#c2cedf;border:1px solid #3b475b;border-radius:3px;padding:1px 4px;white-space:nowrap}output,.num{font-variant-numeric:tabular-nums}header{height:88px;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line)}.brand{min-width:0}.logotype{font-size:25px;letter-spacing:.035em;font-weight:500;color:var(--accent);margin:0 0 5px;line-height:1.2}.subtitle{font-size:11px;color:var(--muted);letter-spacing:.06em}.topnote{color:var(--muted);font-size:11px;line-height:1.8;text-align:right}.tag{display:inline-flex;align-items:center;gap:7px;color:#ccdacb;font-size:11px;letter-spacing:.08em}.tag:before{content:"";height:5px;width:5px;border-radius:50%;background:#a8cead}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 306px;height:calc(100dvh - 88px);min-height:680px}.main{min-width:0;display:flex;flex-direction:column}.scene{position:relative;flex:1;min-height:460px;overflow:hidden;background:#050b18}.scene>canvas{display:block;width:100%;height:100%;position:absolute;inset:0;touch-action:none;cursor:grab}.scene>canvas:active{cursor:grabbing}.viewtop{position:absolute;top:22px;left:24px;right:24px;display:flex;justify-content:space-between;gap:12px;pointer-events:none;align-items:flex-start}.eyebrow{font-size:10px;letter-spacing:.19em;color:#b3bfd1}.viewtitle{font-size:20px;font-weight:400;letter-spacing:.1em;margin-top:7px;text-shadow:0 2px 12px #000}.viewtitle small{font-size:12px;color:#94a6bd;margin-left:10px;letter-spacing:0}.viewactions{display:flex;gap:6px;pointer-events:auto}.viewactions button{background:#0c1525c9;font-size:11px;padding:7px 9px}.livecoords{display:flex;gap:16px;color:#b8c8dc;margin-top:12px;font-size:11px}.livecoords strong{color:#eef3fa;font-weight:500;margin-left:4px}.viewbottom{position:absolute;bottom:20px;left:22px;right:22px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;pointer-events:none}.scenehint{max-width:410px;text-shadow:0 1px 5px #000;font-size:12px;line-height:1.8;color:#b7c8db}.scenehint strong{display:block;color:#e3edf9;font-weight:500;font-size:13px;margin-bottom:3px}.scenehint .muted{font-size:10px;color:#91a4bb}.mapbox{background:#0a1524db;border:1px solid #344258;border-radius:10px;width:176px;flex-shrink:0;overflow:hidden;backdrop-filter:blur(8px)}.maphead{display:flex;justify-content:space-between;padding:10px 10px 0;font-size:10px;color:#bdcce0}.mapbox canvas{display:block;width:174px;height:140px}.mapcaption{padding:0 10px 9px;color:#9aadc6;font-size:9px}.banner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);padding:18px 24px;border:1px solid #48546a;background:#0c1727ec;text-align:center;border-radius:10px;z-index:4;line-height:1.8;max-width:90%;width:max-content}.banner[hidden]{display:none}.banner strong{display:block;font-size:18px;font-weight:500}.banner span{color:var(--muted);font-size:12px}.timeline{background:#0d1624;border-top:1px solid var(--line);padding:18px 24px 16px;flex:none}.playrow{display:flex;align-items:center;gap:10px}.playrow button{white-space:nowrap}.playrow .primary{min-width:106px}.timecode{font-family:ui-monospace,monospace;font-size:17px;margin-left:6px;min-width:118px}.timecode span{color:#7e91aa;font-size:12px}.phase{font-size:11px;letter-spacing:.07em;color:#c6d3e4;margin-left:auto}.speed{background:#172237;border:1px solid #334158;border-radius:6px;color:#d8e1ef;padding:7px 8px}.scrub{width:100%;display:block;margin:15px 0 5px;accent-color:var(--accent);cursor:pointer;height:12px}.timelabels{display:flex;justify-content:space-between;font-size:10px;color:#8ea1ba}.timelabels span:nth-child(2){margin-left:8%}.aside{background:var(--panel);border-left:1px solid var(--line);overflow:auto;padding:22px 22px 18px}.asideheading{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.asideheading h2{font-size:13px;margin:0;font-weight:500;letter-spacing:.09em}.asideheading span{font-size:10px;color:#7f92ac}.presetgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.presetgrid button{padding:9px 2px;font-size:11px}.sectionline{border:0;border-top:1px solid var(--line);margin:19px 0}.control{margin-bottom:19px}.controlhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.controlhead label{font-size:12px;color:#bac8dc}.controlhead output{font-size:17px;color:#f3dcc2;font-weight:400}.controlhead output small{font-size:10px;color:#a6b3c7;margin-left:4px}.control input[type=range]{width:100%;height:14px;margin:0 0 9px;accent-color:#e4bd8b;cursor:pointer}.controlbuttons{display:grid;grid-template-columns:1fr 1fr;gap:6px}.controlbuttons button{display:flex;justify-content:space-between;align-items:center;font-size:11px;padding:7px 8px;min-height:32px}.controlnote{font-size:10px;color:#8398b4;margin:7px 0 0;line-height:1.6}.followrow{display:flex;align-items:center;justify-content:space-between;gap:8px}.followrow button{font-size:11px;padding:7px 10px}.switch{display:flex;align-items:center;gap:7px;color:#becce0;font-size:11px;cursor:pointer}.switch input{accent-color:var(--accent);width:14px;height:14px}.extras{display:flex;flex-wrap:wrap;gap:12px 15px;margin:15px 0}.guidecallout{font-size:11px;color:#aabbd0;line-height:1.8;background:#162337;border-left:2px solid #d6b17e;padding:10px 12px;margin-top:14px}.guidecallout strong{font-weight:500;color:#e4d5c2}details{border-top:1px solid var(--line);margin-top:18px;padding-top:14px;font-size:11px;color:#a1b2ca;line-height:1.9}summary{cursor:pointer;color:#c6d3e4}details p{margin:9px 0}details ul{padding-left:16px}.footerlabel{font-size:9px;color:#7489a5;margin-top:18px;line-height:1.8}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.hide-controls .workspace{grid-template-columns:1fr}.hide-controls .aside{display:none}.pausedpill{color:#f3cf9b;display:none;margin-top:12px;font-size:10px;letter-spacing:.08em}.paused .pausedpill{display:block}
+@media(min-width:1600px){.workspace{grid-template-columns:minmax(0,1fr) 330px}.aside{padding:26px}.scenehint{max-width:540px}}
+@media(max-width:950px){header{padding:16px 20px}.topnote{display:none}.workspace{grid-template-columns:minmax(0,1fr) 280px}.aside{padding:20px 17px}.viewtop{left:18px;right:15px}.viewtitle{font-size:17px}.viewtitle small{display:none}.viewactions{flex-direction:column}.livecoords{gap:10px;flex-wrap:wrap;max-width:260px}.viewbottom{left:18px;right:15px}.scenehint{font-size:11px}.mapbox{width:142px}.mapbox canvas{width:140px;height:114px}.mapcaption{font-size:8px}.timeline{padding:15px}.playrow{gap:6px}.timecode{font-size:15px;min-width:105px}.phase{display:none}}
+@media(max-width:700px){header{height:76px;padding:14px 18px}.logotype{font-size:22px;letter-spacing:.02em}.subtitle{font-size:9px}.workspace{height:auto;min-height:0;display:flex;flex-direction:column}.scene{height:65dvh;min-height:440px;flex:none}.aside{overflow:visible;border-left:0;border-top:1px solid var(--line);padding:22px}.controlsgrid{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}.asideheading{margin-bottom:12px}.presetgrid{max-width:460px}.viewtitle{font-size:16px}.scenehint{max-width:200px}.scenehint .muted{display:none}.mapbox{width:130px}.mapbox canvas{width:128px;height:105px}.viewbottom{gap:10px}.mapcaption{font-size:8px}.controlhead output{font-size:16px}.hide-controls .workspace{display:flex}.hide-controls .scene{height:calc(100dvh - 205px)}.footerlabel{margin-top:12px}.phase{display:block;font-size:10px}.playrow .primary{min-width:95px}.viewactions button{padding:7px;font-size:10px}}
+@media(max-width:420px){.playrow{display:grid;grid-template-columns:1fr 1fr;gap:9px}.playrow .primary{min-width:0}.playrow .timecode{margin:0;font-size:16px;grid-row:2}.playrow .speed{grid-row:2;justify-self:end}.viewtop>div:first-child{min-width:0}.viewactions{flex-shrink:0}.controlsgrid{grid-template-columns:1fr}.scenehint{max-width:165px}.scenehint strong{font-size:11px}.scenehint{font-size:10px}.phase{display:none}.timecode{margin-left:0}.mapbox{width:116px}.mapbox canvas{width:114px;height:92px}.mapcaption{display:none}.maphead{font-size:9px;padding:8px 8px 0}.viewtop{left:15px}.viewtitle{font-size:15px}.livecoords{font-size:10px;gap:8px}.viewactions button{padding:7px 6px}.timeline{padding:14px 12px}.playrow button{padding:8px}.speed{padding:7px 4px}}
+.smokeheading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 12px}.smokeheading .switch{font-size:12px;color:#e1d4c3}.smokeheading span{font-size:10px;color:#92a4bd}.smokecontrols .control{margin-bottom:13px}.smokecontrols .controlhead output{font-size:15px}.smokecontrols .controlhead label{font-size:11px}.smokecontrols .control input{margin-bottom:3px}.smokenote{font-size:10px;color:#99acc4;line-height:1.8;margin:8px 0 14px}.smokestatus{margin-top:8px;font-size:10px;color:#c4c9d1}.windcompass{display:flex;justify-content:space-between;color:#8fa4bf;font-size:9px;margin:2px 0 9px}.smokecontrols[hidden],.smokestatus[hidden]{display:none}
+.typepicker{display:grid;gap:9px;margin:0 0 19px}.typepicker label{font-size:12px;color:#bac8dc}.typepicker select{width:100%;min-width:0;background:#182336;color:var(--text);border:1px solid #42516a;border-radius:7px;padding:10px;font-size:12px}.typedescription{font-size:11px;color:#b5c5da;line-height:1.8;margin:0;min-height:40px}.typepicker button{width:100%;font-size:12px}.activetypes{max-width:480px;color:#bdc9d8;font-size:11px;line-height:1.7;margin-top:8px;text-shadow:0 1px 5px #000}@media(max-width:700px){.activetypes{max-width:235px;font-size:10px}.typedescription{min-height:0}}
+details a{color:#a9d8ee;text-underline-offset:3px}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><h1 class="logotype">Hanabi Simulator</h1><div class="subtitle">花火の3D観察室 · ふたつの打上地点、自由な視点</div></div>
+ <div class="topnote"><span class="tag">3 MINUTES / 2 LAUNCH SITES</span><br>東京湾をイメージした、立体の実験場</div>
+</header>
+<div class="workspace">
+ <main class="main">
+  <div class="scene" id="scene">
+   <canvas id="world" role="img" aria-label="2地点から打ち上がる三次元の花火。操作パネルとキーボードで視点を変更できます。">Canvas対応ブラウザーで開いてください。</canvas>
+   <div class="viewtop"><div><div class="eyebrow">OBSERVATION / PERSPECTIVE</div><div class="viewtitle">花火を、立体で見る。<small id="viewName">湾岸から</small></div><div class="livecoords"><span>距離<strong id="hudDistance">1,100 m</strong></span><span>高度<strong id="hudHeight">25 m</strong></span><span>方位<strong id="hudAzimuth">0°</strong></span></div><div class="activetypes" id="activeTypes"></div><div class="pausedpill" id="pausePill">Ⅱ 一時停止中 · 視点は自由に動かせます</div></div><div class="viewactions"><button id="toggleControls" aria-pressed="false">操作パネルを隠す</button><button id="fullscreen">全画面</button></div></div>
+   <div class="viewbottom"><div class="scenehint"><strong id="insightTitle">距離が変わると、見かけの大きさが変わる。</strong><span id="insightText">一時停止してから回り込むと、同じ花火を別の角度から観察できます。</span><div class="smokestatus" id="smokeStatus" hidden></div><div class="muted">ドラッグ：周回＋視線の上下 / ホイール：距離</div></div><div class="mapbox" id="mapbox"><div class="maphead"><span>上から見た位置</span><span>＋Z ↑</span></div><canvas id="map" width="348" height="280" role="img" aria-label="上空図。AとBは打ち上げ地点、三角は観測者です。風の流れる向きを矢印で表示します。"></canvas><div class="mapcaption">A・B：打上地点　△：観測者</div></div></div>
+   <div id="finished" class="banner" hidden><strong>3分間の打ち上げが終了しました</strong><span>時刻バーを戻して、同じ瞬間を違う視点から。</span></div>
+   <div id="offscreen" class="banner" hidden><span>花火の中心が画面の外にあります</span><br><button id="recenterOverlay">中心を見る</button></div>
+  </div>
+  <section class="timeline" aria-label="再生と時間">
+   <div class="playrow"><button class="primary" id="play" aria-label="一時停止">Ⅱ 一時停止</button><button id="restart" aria-label="最初から再生">↺ 最初から</button><div class="timecode"><output id="clock">0:00</output><span> / 3:00</span></div><span class="phase" id="phase">01 / 開幕</span><label class="sr-only" for="speed">再生速度</label><select class="speed" id="speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1× 速度</option></select></div>
+   <label class="sr-only" for="time">観察する時刻（秒）</label><input class="scrub" id="time" type="range" min="0" max="180" value="0" step="0.05" aria-valuetext="0分0秒">
+   <div class="timelabels"><span>0:00 開幕</span><span>1:00 広がり</span><span>2:00 輪と球</span><span>3:00 終幕</span></div>
+  </section>
+ </main>
+ <aside class="aside" aria-label="観測条件の操作パネル">
+  <div class="asideheading"><h2>観測する場所</h2><span>VIEWPOINT</span></div>
+  <div class="presetgrid" aria-label="視点プリセット"><button data-preset="shore" class="active" aria-pressed="true">湾岸</button><button data-preset="air" aria-pressed="false">上空</button><button data-preset="side" aria-pressed="false">真横</button><button data-preset="near" aria-pressed="false">花火のそば</button></div>
+  <hr class="sectionline">
+  <div class="controlsgrid">
+   <section class="control"><div class="controlhead"><label for="distance">観測距離</label><output id="distanceValue" for="distance">1,100<small>m</small></output></div><input id="distance" type="range" min="10" max="3000" step="1" value="1100"><div class="controlbuttons"><button data-action="near">近づく <kbd>A</kbd></button><button data-action="far">離れる <kbd>Z</kbd></button></div><p class="controlnote">2地点の中点からの水平距離（最小10 m）</p></section>
+   <section class="control"><div class="controlhead"><label for="height">観測高度</label><output id="heightValue" for="height">25<small>m</small></output></div><input id="height" type="range" min="5" max="1600" step="5" value="25"><div class="controlbuttons"><button data-action="up">上がる <span><kbd>↑</kbd> <kbd>W</kbd></span></button><button data-action="down">下がる <span><kbd>↓</kbd> <kbd>S</kbd></span></button></div><p class="controlnote">水面を0 mとする観測者の高さ</p></section>
+   <section class="control"><div class="controlhead"><label for="azimuth">周回位置</label><output id="azimuthValue" for="azimuth">0<small>°</small></output></div><input id="azimuth" type="range" min="0" max="360" step="1" value="0"><div class="controlbuttons"><button data-action="left">左に回る <kbd>←</kbd></button><button data-action="right">右に回る <kbd>→</kbd></button></div><p class="controlnote">2地点の中点を中心に360°周回</p></section>
+   <section class="control"><div class="controlhead"><label for="pitch">カメラの上下角</label><output id="pitchValue" for="pitch">15<small>°</small></output></div><input id="pitch" type="range" min="-90" max="90" step="1" value="15"><div class="controlbuttons"><button data-action="lookUp">上を向く <kbd>E</kbd></button><button data-action="lookDown">下を向く <kbd>D</kbd></button></div><p class="controlnote">0°＝水平 / ＋＝仰角 / −＝俯角</p></section>
+  </div>
+  <div class="followrow"><button id="recenter">◎ 中心を見る</button><label class="switch"><input id="tracking" type="checkbox" checked>中心を追う</label></div>
+  <hr class="sectionline">
+  <div class="asideheading"><h2>花火の形を選ぶ</h2><span id="typeCount">10 TYPES</span></div>
+  <section class="typepicker" aria-label="花火の種類別の観察">
+   <label for="fireworkType">観察する種類</label><select id="fireworkType" aria-describedby="shapeDescription"></select>
+   <p class="typedescription" id="shapeDescription"></p>
+   <button id="inspectType">この形が開く時刻で一時停止</button>
+   <p class="controlnote">演出中の対応時刻に移動します。視点を回して立体の違いを観察できます。</p>
+  </section>
+  <div class="asideheading"><h2>立体を見つける</h2><span>EXPLORE</span></div>
+  <div class="extras"><label class="switch"><input id="guides" type="checkbox">粒の配置・軌道の補助線</label><label class="switch"><input id="grid" type="checkbox" checked>水面グリッド</label><label class="switch"><input id="showMap" type="checkbox" checked>位置図</label></div>
+  <div class="smokeheading"><label class="switch"><input id="smoke" type="checkbox" aria-controls="smokeControls">煙を再現する <kbd>H</kbd></label><span>SMOKE & WIND</span></div>
+  <div class="smokecontrols" id="smokeControls" hidden>
+   <section class="control"><div class="controlhead"><label for="smokeDensity">煙の濃さ</label><output id="smokeDensityValue" for="smokeDensity">100<small>%</small></output></div><input id="smokeDensity" type="range" min="20" max="500" step="10" value="100"></section>
+  </div>
+  <div class="smokecontrols" id="windControls">
+   <section class="control"><div class="controlhead"><label for="windSpeed">風速</label><output id="windSpeedValue" for="windSpeed">4.0<small>m/s</small></output></div><input id="windSpeed" type="range" min="0" max="12" step="0.5" value="4"><p class="controlnote">煙の表示にかかわらず、花火にも作用します</p></section>
+   <section class="control"><div class="controlhead"><label for="windDirection">風の向き（吹いていく先）</label><output id="windDirectionValue" for="windDirection">90<small>°</small></output></div><input id="windDirection" type="range" min="0" max="360" step="5" value="90"><div class="windcompass"><span>0° ↑ ＋Z</span><span>90° → ＋X</span><span>180° ↓ −Z</span><span>270° ← −X</span></div></section>
+   <p class="smokenote">一定の風を全時間に適用します。設定を変えると、打ち上げから花火と煙を計算し直します。0 m/sで無風にできます。</p>
+  </div>
+  <button id="study" style="width:100%">球と輪を止めて観察する</button>
+  <div class="guidecallout"><strong>同じ瞬間を、違う場所から。</strong><br>形を選んで一時停止 → 左右キーで周回。小花の群れの奥行き、横から見た輪の薄さ、風による粒の流れ方を観察できます。</div>
+  <details><summary>操作ガイド・このモデルについて</summary><p><kbd>Space</kbd> 再生／停止　<kbd>R</kbd> 最初から<br><kbd>H</kbd> 煙の表示切替<br><kbd>Shift</kbd>＋移動キーで速く移動<br><kbd>A</kbd> 近づく　<kbd>Z</kbd> 離れる<br><kbd>↑</kbd> / <kbd>W</kbd> 上昇　<kbd>↓</kbd> / <kbd>S</kbd> 下降<br><kbd>←</kbd> / <kbd>→</kbd> 周回　<kbd>E</kbd> / <kbd>D</kbd> 視線の上下</p><p>スライダーの操作中は矢印キーでその値を変更できます。スライダー以外にフォーカスを移すと、上記のショートカットに戻ります。</p><p>「中心を追う」は高度300 mの中点に視線を合わせます。E／Dやドラッグで角度を変えると追尾が解除されます。ボタンは長押しできます。「花火のそば」でB地点の近く・高度300 mへ移動します。Aキーやホイールでさらに接近でき、左右キーでA地点側にも回り込めます。近距離では移動がゆっくりになります。</p><p>花火は10種類。玉・光る粒・尾の火花に三次元の位置と速度があり、重力（9.81 m/s²）と、風に対する速度の二乗に比例する空気抵抗を計算します。玉は打ち上げ後に重力と空気抵抗を受け、開花時には玉の速度が粒へ引き継がれます。小花の群れは飛び出した子玉が時間差で開き、しだれの尾は移動する粒から放たれる火花で表現します。扇形は打上地点から斜めに飛ぶ光の粒の列です。補助線は、粒の配置や計算された飛行軌道を表示します。</p><p>2地点の間隔は460 m。東京湾花火大会の雰囲気を参考にした架空の配置・演出で、実際の地形や開催プログラムの再現ではありません。水面の反射は演出的な近似です。音はありません。</p><p>煙は実際に計算された飛行・開花位置から発生し、風に流され、上昇・拡散して薄くなる簡易モデルです。「濃さ」は煙の光学的な量を変え、500%でも不透明さには上限があります。風の方向は「吹いていく先」で、通常の気象の風向（吹いてくる方角）とは逆です。3分の終了時は残煙も静止します。</p><p>運動は物理法則に沿って計算しますが、実物の測定値で検証した再現ではありません。開花の初速度・燃焼時間・色は種類ごとの仮定です。燃焼による粒の変化は近似し、爆発の圧力や燃焼化学、複雑な乱流、煙の散乱光は精密には解いていません。煙の表示と水面反射も見え方の近似です。</p><p>参照：<a href="https://www1.grc.nasa.gov/beginners-guide-to-aeronautics/drag-equation/" target="_blank" rel="noopener">NASAの抗力式</a> ／ <a href="https://www.hanabi-jpa.jp/uchiage/structure.html" target="_blank" rel="noopener">日本煙火協会の花火解説</a></p><p>標準速度で、燃え尽きた後の余韻を含め3分間。0.5×／0.25×は観察用のスロー再生です。別のタブに移動すると自動で一時停止します。</p></details>
+  <div class="footerlabel">Hanabi Simulator · 花火の3D観察室<br>オフライン対応 · このHTMLだけで動作します</div>
+ </aside>
+</div>
+<div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+<script>
+/*
+ * Educational two-barge fireworks model. Metres, seconds; x east, y up, z north.
+ * Projectiles obey gravity and quadratic drag relative to a uniform wind.
+ * Burning stars approximately shrink at constant material density: their area /
+ * mass ratio increases as mass is consumed. No chemical combustion or measured
+ * shell calibration is claimed. Pattern geometry only sets initial velocities.
+ * All subsequent paths, including child shells and detached embers, are integrated.
+ */
+(function (root) {
+  'use strict';
+  const DURATION = 180, TAU = Math.PI * 2, GRAVITY = 9.81, STEP = 1 / 90;
+  const SITES = [{ id: 'A', x: -230, y: 0, z: 0 }, { id: 'B', x: 230, y: 0, z: 0 }];
+  const PALETTE = [[255,191,76], [103,226,255], [255,115,164], [166,136,255], [149,255,180], [255,235,179]];
+  const TYPES = [
+    { id:'sphere', name:'球形', description:'球状に飛び出した星が、重力と空気抵抗を受けて広がります。風で形と中心が変わります。', dimension:'立体' },
+    { id:'ring', name:'輪形', description:'同じ平面内に飛び出す星の輪です。横からは細く見え、空気抵抗と風で次第にゆがみます。', dimension:'平面' },
+    { id:'willow', name:'しだれ', description:'長く燃える星から小さな火花が離れ、別々に減速・落下して尾を作ります。', dimension:'立体' },
+    { id:'doubleShell', name:'二重球', description:'異なる速さで飛び出す二組の星が、大小二つの球を作ります。', dimension:'立体' },
+    { id:'palm', name:'ヤシ', description:'少数の明るい星が斜め上へ飛び出し、放出する火花と重力でヤシ状の尾を作ります。', dimension:'立体' },
+    { id:'fan', name:'扇', description:'台船から扇状に打ち上げるコメットです。星そのものが弾道に沿って上昇し、火花を残します。', dimension:'平面' },
+    { id:'saturn', name:'土星', description:'小さな球状の星と、傾いた平面内に飛び出す輪を組み合わせます。', dimension:'立体' },
+    { id:'bouquet', name:'小花の群れ', description:'親玉から離れた子玉がそれぞれ弾道飛行し、時間差で別々の位置から小さく開きます。', dimension:'立体' },
+    { id:'goldenWillow', name:'金の大しだれ', description:'長く燃える金色の星と、そこから離れる小さな火花が落下して大きなしだれを作ります。', dimension:'立体' },
+    { id:'multicolorPistil', name:'彩色の光跡', description:'金色の小さな芯と、外側へ飛ぶ色の異なるコメット。筋は飛行中に放出される火花です。', dimension:'立体' }
+  ];
+  const SPEC = {
+    sphere:{count:144,speed:67,life:3.8,k:.010,embers:0},
+    ring:{count:104,speed:67,life:3.9,k:.010,embers:0},
+    willow:{count:84,speed:61,life:7.4,k:.011,embers:1.6},
+    doubleShell:{count:136,speed:69,life:3.9,k:.010,embers:0},
+    palm:{count:10,speed:69,life:6.5,k:.007,embers:1.8},
+    fan:{count:11,speed:91,life:7.1,k:.0045,embers:1.1},
+    saturn:{count:148,speed:69,life:4.1,k:.010,embers:0},
+    bouquet:{count:36,speed:37,life:3.4,k:.013,embers:0},
+    goldenWillow:{count:92,speed:74,life:8.5,k:.009,embers:2.2},
+    multicolorPistil:{count:24,speed:78,life:5.5,k:.008,embers:1.05}
+  };
+  function clamp(v,lo,hi) { return Math.max(lo,Math.min(hi,v)); }
+  function random(seed) { let s=seed>>>0; return function(){s+=0x6D2B79F5;let v=s;v=Math.imul(v^(v>>>15),v|1);v^=v+Math.imul(v^(v>>>7),v|61);return ((v^(v>>>14))>>>0)/4294967296;}; }
+  function finite(v,fallback) { return Number.isFinite(v)?v:fallback; }
+  function windOptions(options={}) {
+    const speed=Math.max(0,finite(options.windSpeed,4));
+    const direction=finite(options.windDirection,90), angle=direction*Math.PI/180;
+    return {windSpeed:speed,windDirection:direction,wx:Math.sin(angle)*speed,wz:Math.cos(angle)*speed,gravity:finite(options.gravity,GRAVITY)};
+  }
+  function state(x=0,y=0,z=0,vx=0,vy=0,vz=0) { return {x,y,z,vx,vy,vz}; }
+  function copy(s) { return state(s.x,s.y,s.z,s.vx,s.vy,s.vz); }
+  function accelerationRaw(s,age,body,wind) {
+    const fraction=body.burnTime>0?1-(1-finite(body.residualMassFraction,.32))*clamp(age/body.burnTime,0,1):1;
+    const k=finite(body.ballisticK,0)/Math.cbrt(Math.max(.05,fraction));
+    const ux=s.vx-wind.wx, uy=s.vy, uz=s.vz-wind.wz, speed=Math.hypot(ux,uy,uz);
+    return {ax:-k*speed*ux,ay:-wind.gravity-k*speed*uy,az:-k*speed*uz};
+  }
+  function advance(s,age,dt,body,wind) {
+    const a=accelerationRaw(s,age,body,wind), half=dt*.5;
+    const m=state(s.x+s.vx*half,s.y+s.vy*half,s.z+s.vz*half,s.vx+a.ax*half,s.vy+a.ay*half,s.vz+a.az*half);
+    const b=accelerationRaw(m,age+half,body,wind);
+    return state(s.x+m.vx*dt,s.y+m.vy*dt,s.z+m.vz*dt,s.vx+b.ax*dt,s.vy+b.ay*dt,s.vz+b.az*dt);
+  }
+  function integrate(initial,duration,body={},options={},step=STEP) {
+    const wind=windOptions(options), h=Number.isFinite(step)&&step>0?step:STEP;
+    let s=copy(initial), t=0;
+    while(t<duration-1e-12) { const dt=Math.min(h,duration-t);s=advance(s,t,dt,body,wind);t+=dt; }
+    return s;
+  }
+  function acceleration(s,age,body={},options={}) { return accelerationRaw(s,age,body,windOptions(options)); }
+  function track(initial,duration,body,wind,ground=false) {
+    const steps=Math.ceil(duration/STEP), data=new Float32Array((steps+1)*6);
+    let s=copy(initial), actualDuration=duration, last=steps;
+    function write(index,p){const j=index*6;data[j]=p.x;data[j+1]=p.y;data[j+2]=p.z;data[j+3]=p.vx;data[j+4]=p.vy;data[j+5]=p.vz;}
+    write(0,s);
+    for(let i=1;i<=steps;i++) {
+      const time=(i-1)*STEP, dt=Math.min(STEP,duration-time), next=advance(s,time,dt,body,wind);
+      if(ground&&next.y<=0) {const u=s.y/(s.y-next.y);next.x=s.x+(next.x-s.x)*u;next.z=s.z+(next.z-s.z)*u;next.y=0;actualDuration=time+dt*u;last=i;write(i,next);break;}
+      s=next;write(i,s);
+    }
+    return {data,last,duration:actualDuration,plannedDuration:duration};
+  }
+  function at(path,time) {
+    const t=clamp(time,0,path.duration), index=Math.min(Math.floor(t/STEP),path.last-1);
+    if(path.last===0) return read(path,0);
+    const i=Math.max(0,index), span=i+1===path.last?path.duration-i*STEP:STEP;
+    const f=span>1e-9?clamp((t-i*STEP)/span,0,1):1;
+    const a=i*6,b=(i+1)*6,d=path.data;
+    return state(d[a]+(d[b]-d[a])*f,d[a+1]+(d[b+1]-d[a+1])*f,d[a+2]+(d[b+2]-d[a+2])*f,d[a+3]+(d[b+3]-d[a+3])*f,d[a+4]+(d[b+4]-d[a+4])*f,d[a+5]+(d[b+5]-d[a+5])*f);
+  }
+  function read(path,i){const j=i*6,d=path.data;return state(d[j],d[j+1],d[j+2],d[j+3],d[j+4],d[j+5]);}
+  function rotate(p,yaw,tilt=0){const y=p[1]*Math.cos(tilt)-p[2]*Math.sin(tilt),z=p[1]*Math.sin(tilt)+p[2]*Math.cos(tilt);return [p[0]*Math.cos(yaw)+z*Math.sin(yaw),y,-p[0]*Math.sin(yaw)+z*Math.cos(yaw)];}
+  function sphereDirection(i,n,yaw,tilt=0){const y=1-2*(i+.5)/n,a=i*Math.PI*(3-Math.sqrt(5)),r=Math.sqrt(1-y*y);return rotate([r*Math.cos(a),y,r*Math.sin(a)],yaw,tilt);}
+  const events=[],siteSequence=[0,0];
+  function addEvent(siteIndex,launch,sequence,finale,forcedType) {
+    const rng=random(7319+sequence*92821+siteIndex*41047),site=SITES[siteIndex];
+    const type=forcedType||TYPES[siteSequence[siteIndex]%TYPES.length].id;siteSequence[siteIndex]++;
+    const spec=SPEC[type],yaw=rng()*TAU,tilt=(rng()-.5)*.18;
+    const shellBody={ballisticK:.00044};
+    const initial=state(site.x,2,site.z,(rng()-.5)*3,83+rng()*18+(finale?3:0),(rng()-.5)*3);
+    let apex=copy(initial),flight=0;
+    if(type!=='fan') while(apex.vy>0&&flight<13){apex=advance(apex,flight,STEP,shellBody,windOptions({windSpeed:0}));flight+=STEP;}
+    else {flight=0;apex=state(site.x,2,site.z);initial.vx=0;initial.vy=0;initial.vz=0;}
+    const event={id:'firework-'+sequence,site:site.id,launch,burst:launch+flight,type,seed:7319+sequence*92821+siteIndex*41047,
+      life:spec.life+(type==='bouquet'?1.65:0)+spec.embers+.1,color:(['willow','palm','goldenWillow','multicolorPistil'].includes(type)?PALETTE[0]:PALETTE[(sequence+siteIndex*2)%6]).slice(),
+      cx:apex.x,cy:apex.y,cz:apex.z,radius:140,speed:spec.speed,studyAzimuth:yaw/TAU*360,yaw,tilt,initial,shellBody,finale,particles:[],guidePaths:[]};
+    events.push(event);
+  }
+  let sequence=0;
+  addEvent(0,0,sequence++,false,'sphere');addEvent(1,.5,sequence++,false,'ring');
+  for(let t=4.3,v=0;t<30;t+=3.9,v++){addEvent(v%2,t,sequence++,false);if(v%3===2)addEvent((v+1)%2,t+.62,sequence++,false);}
+  for(let t=31.1,v=0;t<75;t+=3.05,v++){addEvent(v%2,t,sequence++,false);if(v%3!==1)addEvent((v+1)%2,t+.64,sequence++,false);}
+  for(let t=76,v=0;t<120;t+=2.65,v++){addEvent(v%2,t,sequence++,false);if(v%2===0)addEvent((v+1)%2,t+.37,sequence++,false);}
+  for(let t=121;t<145;t+=2.7){addEvent(0,t,sequence++,false);addEvent(1,t+.2,sequence++,false);}
+  for(let t=146;t<=159.001;t+=1.1){addEvent(0,t,sequence++,true);addEvent(1,t+.22,sequence++,true);}
+  events.sort((a,b)=>a.launch-b.launch);
+  const eventMap=new Map(events.map(e=>[e.id,e]));
+  function eventOf(value){return typeof value==='string'?eventMap.get(value):value;}
+  const configs=new Map();
+  function context(options={}) {
+    const wind=windOptions(options),key=[wind.windSpeed,wind.windDirection,wind.gravity].join(':');
+    if(configs.has(key)){const value=configs.get(key);configs.delete(key);configs.set(key,value);return value;}
+    const value={wind,skeletons:new Map(),tracks:new Map(),embers:new Map()};configs.set(key,value);
+    while(configs.size>2)configs.delete(configs.keys().next().value);
+    return value;
+  }
+  function skeleton(event,ctx) {
+    if(ctx.skeletons.has(event.id))return ctx.skeletons.get(event.id);
+    const rng=random(event.seed+23117),spec=SPEC[event.type],flight=event.burst-event.launch;
+    const shell=track(event.initial,flight,event.shellBody,ctx.wind);
+    const burstState=event.type==='fan'?state(event.initial.x,2,event.initial.z):at(shell,flight);
+    const result={event,shell,burstState,children:[],stars:[],smoke:null};
+    function addStar(direction,color,speed=spec.speed,settings={}) {
+      const parent=settings.parent||burstState,variation=1+(rng()-.5)*(settings.variation===undefined?.08:settings.variation),relative=direction.map(v=>v*speed*variation);
+      const life=(settings.life||spec.life)*(.90+rng()*.10),body={ballisticK:(settings.k||spec.k)*(.94+rng()*.12),burnTime:life,residualMassFraction:.32};
+      const initial=state(parent.x,parent.y,parent.z,parent.vx+relative[0],parent.vy+relative[1],parent.vz+relative[2]);
+      result.stars.push({birth:settings.birth===undefined?event.burst:settings.birth,initial,relativeVelocity:{vx:relative[0],vy:relative[1],vz:relative[2]},parentState:copy(parent),parentIndex:settings.parentIndex===undefined?-1:settings.parentIndex,sourceKind:settings.sourceKind||(event.type==='fan'?'ground':'burst'),body,life,
+        color:color.slice(),size:settings.size||1.5,emissionLife:settings.embers===undefined?spec.embers:settings.embers,emissionInterval:settings.interval||.20,phase:rng()*TAU,index:result.stars.length});
+    }
+    function addSphere(count,speed,color,settings={}){for(let i=0;i<count;i++)addStar(sphereDirection(i,count,event.yaw,.47),color,speed,settings);}
+    function addRing(count,speed,color,tilt=event.tilt){for(let i=0;i<count;i++){const a=TAU*i/count;addStar(rotate([Math.cos(a),Math.sin(a),0],event.yaw,tilt),color,speed,{variation:.025});}}
+    if(event.type==='sphere'||event.type==='willow')addSphere(spec.count,spec.speed,event.color,{size:event.type==='willow'?1.7:1.5,interval:event.type==='willow'?.15:.20});
+    else if(event.type==='ring')addRing(spec.count,spec.speed,event.color);
+    else if(event.type==='doubleShell'){addSphere(88,spec.speed,PALETTE[1]);addSphere(48,spec.speed*.45,PALETTE[2],{k:.012,life:3.5});}
+    else if(event.type==='saturn'){addSphere(68,spec.speed*.43,PALETTE[1]);addRing(80,spec.speed,PALETTE[0],.95);}
+    else if(event.type==='palm')for(let i=0;i<spec.count;i++){const a=TAU*i/spec.count+event.yaw,elevation=.32+(i%3)*.16;addStar([Math.cos(a)*Math.cos(elevation),Math.sin(elevation),Math.sin(a)*Math.cos(elevation)],event.color,spec.speed,{size:3.6,interval:.10});}
+    else if(event.type==='fan')for(let i=0;i<spec.count;i++){const a=(i/(spec.count-1)-.5)*1.8;addStar(rotate([Math.sin(a),Math.cos(a),0],event.yaw,0),i%2?PALETTE[2]:PALETTE[0],spec.speed,{size:3.0,interval:.13});}
+    else if(event.type==='goldenWillow'){addSphere(64,spec.speed,PALETTE[0],{size:2.2,interval:.14});addSphere(28,spec.speed*.33,PALETTE[5],{life:3.2,embers:0,size:1.2});}
+    else if(event.type==='multicolorPistil'){addSphere(54,spec.speed*.22,PALETTE[0],{life:3.2,embers:0,size:1.2});for(let i=0;i<24;i++)addStar(sphereDirection(i,24,event.yaw,.36),PALETTE[1+i%4],spec.speed,{size:2.8,interval:.14});}
+    else if(event.type==='bouquet')for(let group=0;group<9;group++){
+      const d=sphereDirection(group,9,event.yaw,.23),speed=25+rng()*7,relative={vx:d[0]*speed,vy:d[1]*speed,vz:d[2]*speed};
+      const initial=state(burstState.x,burstState.y,burstState.z,burstState.vx+relative.vx,burstState.vy+relative.vy,burstState.vz+relative.vz);
+      const delay=.82+rng()*.75,body={ballisticK:.0032},path=track(initial,delay,body,ctx.wind),childState=at(path,delay);
+      const child={birth:event.burst,burst:event.burst+delay,initial,burstState:childState,relativeVelocity:relative,body,path,index:group};result.children.push(child);
+      addSphere(spec.count,spec.speed,PALETTE[(group+(event.site==='B'?1:0))%6],{parent:childState,birth:child.burst,parentIndex:group,sourceKind:'child',size:1.3,variation:.10});
+    }
+    ctx.skeletons.set(event.id,result);return result;
+  }
+  function trajectories(event,ctx) {
+    if(ctx.tracks.has(event.id)){const v=ctx.tracks.get(event.id);ctx.tracks.delete(event.id);ctx.tracks.set(event.id,v);return v;}
+    const sk=skeleton(event,ctx),paths=sk.stars.map(s=>track(s.initial,s.life,s.body,ctx.wind,true));
+    const value={sk,paths};ctx.tracks.set(event.id,value);
+    // Enough for the dense finale, while seeks cannot retain the entire show.
+    while(ctx.tracks.size>14)ctx.tracks.delete(ctx.tracks.keys().next().value);
+    return value;
+  }
+  function sourceAt(eventOrId,time,options={}) {
+    const event=eventOf(eventOrId);if(!event)return null;
+    const ctx=context(options),sk=skeleton(event,ctx);
+    if(time<=event.burst)return event.type==='fan'?copy(sk.burstState):at(sk.shell,time-event.launch);
+    return integrate(sk.burstState,time-event.burst,{ballisticK:.010},options);
+  }
+  function smokeSources(eventOrId,options={}) {
+    const event=eventOf(eventOrId);if(!event)return [];
+    const ctx=context(options),sk=skeleton(event,ctx);if(sk.smoke)return sk.smoke;
+    const sources=[];
+    function add(kind,index,birth,p,strength){sources.push({id:event.id+'-'+kind+'-'+index,eventId:event.id,birth,x:p.x,y:p.y,z:p.z,vx:p.vx,vy:p.vy,vz:p.vz,strength,kind});}
+    if(event.type!=='fan') {
+      const flight=event.burst-event.launch;
+      for(let i=0;i<4;i++){const age=flight*(.15+i*.22);add('ascent',i,event.launch+age,at(sk.shell,age),.28);}
+      add('burst',0,event.burst,sk.burstState,event.type==='bouquet'?.5:1);
+    }
+    for(const child of sk.children)add('child',child.index,child.burst,child.burstState,.38);
+    const representatives=event.type==='fan'?[1,5,9]:[Math.floor(sk.stars.length*.24),Math.floor(sk.stars.length*.73)];
+    let index=0;
+    for(const id of representatives){const star=sk.stars[id];if(!star)continue;for(const fraction of [.28,.66]){const age=star.life*fraction,p=integrate(star.initial,age,star.body,ctx.wind);if(p.y>1)add('star',index++,star.birth+age,p,event.type==='goldenWillow'?.5:.30);}}
+    sk.smoke=sources;return sources;
+  }
+  function emberPath(event,star,index,starPath,ctx) {
+    const key=event.id+':'+star.index+':'+index;
+    if(ctx.embers.has(key))return ctx.embers.get(key);
+    const age=index*star.emissionInterval,p=at(starPath,age),rng=random(event.seed+star.index*20117+index*4327);
+    const initial=state(p.x,p.y,p.z,p.vx+(rng()-.5)*2,p.vy+(rng()-.5)*2,p.vz+(rng()-.5)*2);
+    const body={ballisticK:.045+rng()*.018,burnTime:star.emissionLife,residualMassFraction:.18};
+    const path=track(initial,star.emissionLife,body,ctx.wind,true);ctx.embers.set(key,path);
+    while(ctx.embers.size>6000)ctx.embers.delete(ctx.embers.keys().next().value);
+    return path;
+  }
+  function fade(age,life){const remaining=1-age/life;return Math.min(1,age/.055)*Math.pow(clamp(remaining/.35,0,1),1.15);}
+  function addLight(sparks,event,star,p,previous,alpha,size,kind='star') {
+    if(p.y<=.3||alpha<.008)return;
+    sparks.push({x:p.x,y:p.y,z:p.z,px:previous.x,py:previous.y,pz:previous.z,alpha,size,color:star.color,eventId:event.id,kind});
+  }
+  function sample(time,options={}) {
+    const t=clamp(finite(time,0),0,DURATION),rockets=[],sparks=[],bursts=[];
+    if(t>=DURATION)return {rockets,sparks,bursts};
+    const ctx=context(options);
+    for(const event of events) {
+      if(event.launch>t)break;
+      if(t>event.burst+event.life)continue;
+      const sk=skeleton(event,ctx);
+      if(t<event.burst) {
+        const p=at(sk.shell,t-event.launch),prev=at(sk.shell,Math.max(0,t-event.launch-.035));
+        rockets.push({...p,prevX:prev.x,prevY:prev.y,prevZ:prev.z,alpha:.85,color:[255,217,146],event});continue;
+      }
+      for(const child of sk.children)if(t<child.burst){const p=at(child.path,t-child.birth),prev=at(child.path,Math.max(0,t-child.birth-.02));rockets.push({...p,prevX:prev.x,prevY:prev.y,prevZ:prev.z,alpha:.24,color:[255,187,94],event,child:true});}
+      const value=trajectories(event,ctx),positions=[],guidePaths=[];
+      let cx=0,cy=0,cz=0,count=0;
+      for(let i=0;i<sk.stars.length;i++) {
+        const star=sk.stars[i],path=value.paths[i],age=t-star.birth;
+        if(age<0)continue;
+        const alive=age<Math.min(star.life,path.duration);
+        if(alive){
+          const p=at(path,age),prev=at(path,Math.max(0,age-.025));positions.push({p,star});cx+=p.x;cy+=p.y;cz+=p.z;count++;
+          const flicker=.94+.06*Math.sin(age*16+star.phase);addLight(sparks,event,star,p,prev,fade(age,star.life)*flicker,star.size);
+        }
+        if(star.emissionLife>0){
+          const first=Math.max(1,Math.ceil((age-star.emissionLife)/star.emissionInterval));
+          const last=Math.min(Math.floor(age/star.emissionInterval),Math.floor(Math.min(star.life,path.duration)/star.emissionInterval));
+          for(let k=first;k<=last;k++){
+            const emitted=k*star.emissionInterval,ea=age-emitted;if(ea<0||ea>=star.emissionLife)continue;
+            const ep=emberPath(event,star,k,path,ctx);if(ea>=ep.duration)continue;
+            const p=at(ep,ea),prev=at(ep,Math.max(0,ea-.025));
+            const luminosity=.72*Math.pow(1-ea/star.emissionLife,1.3)*Math.pow(Math.max(0,1-emitted/star.life),.25);
+            addLight(sparks,event,star,p,prev,luminosity,Math.max(.8,star.size*.56),'ember');
+          }
+        }
+      }
+      if(!count){cx=sk.burstState.x;cy=sk.burstState.y;cz=sk.burstState.z;count=1;}else{cx/=count;cy/=count;cz/=count;}
+      let radius=0;for(const item of positions)radius=Math.max(radius,Math.hypot(item.p.x-cx,item.p.y-cy,item.p.z-cz));
+      // Guides connect actual current star positions for planar forms, and show
+      // a few actual integrated trajectories for other forms. No ideal spheres.
+      if(event.type==='ring')guidePaths.push({points:positions.map(q=>[q.p.x,q.p.y,q.p.z]),closed:true});
+      else if(event.type==='saturn')guidePaths.push({points:positions.filter(q=>q.star.index>=68).map(q=>[q.p.x,q.p.y,q.p.z]),closed:true});
+      else {
+        const stride=Math.max(1,Math.floor(sk.stars.length/8));
+        for(let i=0;i<sk.stars.length;i+=stride){const star=sk.stars[i],age=Math.min(t-star.birth,star.life,value.paths[i].duration);if(age<.05)continue;const points=[];for(let j=0;j<=20;j++){const p=at(value.paths[i],age*j/20);points.push([p.x,p.y,p.z]);}guidePaths.push({points,closed:false});}
+      }
+      if(event.type==='bouquet')for(const child of sk.children)if(t>=child.burst&&t<child.burst+SPEC.bouquet.life)bursts.push({id:event.id+'-child-'+child.index,parentId:event.id,x:child.burstState.x,y:child.burstState.y,z:child.burstState.z,radius:20,age:t-child.burst,life:SPEC.bouquet.life,type:event.type,site:event.site,color:PALETTE[child.index%6],secondary:true,guidePaths:[]});
+      bursts.push({id:event.id,x:cx,y:cy,z:cz,radius,age:t-event.burst,life:event.life,type:event.type,site:event.site,color:event.color,guidePaths,origin:copy(sk.burstState),groundComets:event.type==='fan'});
+    }
+    return {rockets,sparks,bursts};
+  }
+  function eventState(eventOrId,options={}) {
+    const event=eventOf(eventOrId);if(!event)return null;const sk=skeleton(event,context(options));
+    return {launch:{time:event.launch,state:copy(event.initial)},burst:{time:event.burst,state:copy(sk.burstState)},
+      children:sk.children.map(c=>({birth:c.birth,burst:c.burst,initial:copy(c.initial),burstState:copy(c.burstState),relativeVelocity:{...c.relativeVelocity},body:{...c.body}})),
+      stars:sk.stars.map(s=>({birth:s.birth,initial:copy(s.initial),relativeVelocity:{...s.relativeVelocity},parentState:copy(s.parentState),sourceKind:s.sourceKind,parentIndex:s.parentIndex,body:{...s.body},life:s.life}))};
+  }
+  const studyTimes={};
+  for(const type of TYPES){let best=null,bestScore=Infinity;const offset=type.id==='fan'?3.6:type.id==='goldenWillow'?4.3:type.id==='willow'?3.8:type.id==='bouquet'?2.7:2.1;
+    for(const e of events){if(e.type!==type.id||e.burst>130)continue;const t=e.burst+offset;let score=e.launch*.002;for(const other of events){if(other===e||t<other.burst||t>other.burst+other.life)continue;score+=(other.site===e.site?3:.6)*(1-(t-other.burst)/other.life);}if(score<bestScore){best=e;bestScore=score;}}
+    studyTimes[type.id]={time:best.burst+offset,eventId:best.id,azimuth:best.studyAzimuth};}
+  const comparisonTime=Math.max(events[0].burst,events[1].burst)+1.5;
+  root.FireworksModel={sites:SITES,duration:DURATION,types:TYPES,events,studyTimes,comparisonTime,sample,sourceAt,smokeSources,
+    physics:{step:STEP,gravity:GRAVITY,dragLaw:'quadratic relative-air velocity',integrate,acceleration,eventState}};
+})(typeof window!=='undefined'?window:globalThis);
+
+</script>
+<script>
+/*
+ * A deterministic Gaussian-puff approximation, not a CFD or weather forecast.
+ * Metres: x = east, y = altitude, z = north. Wind directions describe flow TO.
+ * Smoke is released at positions supplied by the same ballistic fireworks model.
+ * Diffusion increases variance by 2 K t. After each short source emission ends,
+ * optical amount is conserved for the first 60 seconds: column optical depth
+ * falls as 1 / variance. Faint older puffs smoothly retire over 15 seconds to
+ * bound the visualization history; that retirement is a rendering approximation.
+ * The displayed density multiplier changes optical amount, with Beer–Lambert
+ * opacity (1 - exp(-optical depth)); 500% therefore need not be 5 times alpha.
+ */
+(function (root) {
+  'use strict';
+
+  const MAX_PUFFS = 768;
+  const MAX_AGE = 75;
+  const descriptorCaches = new WeakMap();
+  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+  const finite = (value, fallback) => Number.isFinite(value) ? value : fallback;
+  const kinds = {
+    ascent: { sigma: 2.8, opticalDepth: 0.14, diffusion: 1.2, buoyancy: 0.7, cooling: 6, emission: 0.35 },
+    burst: { sigma: 7, opticalDepth: 0.22, diffusion: 2.2, buoyancy: 1.5, cooling: 10, emission: 0.25 },
+    child: { sigma: 4.2, opticalDepth: 0.17, diffusion: 1.8, buoyancy: 1.1, cooling: 8, emission: 0.25 },
+    star: { sigma: 3.6, opticalDepth: 0.16, diffusion: 1.5, buoyancy: 0.8, cooling: 7, emission: 0.55 }
+  };
+
+  function seedFor(value) {
+    let hash = 2166136261;
+    const text = String(value);
+    for (let i = 0; i < text.length; i++) hash = Math.imul(hash ^ text.charCodeAt(i), 16777619);
+    return hash >>> 0;
+  }
+
+  function windSettings(options) {
+    const windSpeed = clamp(finite(options.windSpeed, 4), 0, 20);
+    const windDirection = ((finite(options.windDirection, 90) % 360) + 360) % 360;
+    return { windSpeed, windDirection };
+  }
+
+  function descriptors(events, wind, time) {
+    const model = root.FireworksModel;
+    if (!model || typeof model.smokeSources !== 'function') return [];
+    let cache = descriptorCaches.get(events);
+    if (!cache) { cache = new Map(); descriptorCaches.set(events, cache); }
+    const key = `${wind.windSpeed}/${wind.windDirection}`;
+    let eventCache = cache.get(key);
+    if (!eventCache) { eventCache = new Map(); cache.set(key, eventCache); }
+    while (cache.size > 3) cache.delete(cache.keys().next().value);
+    const result = [];
+    for (const event of events) {
+      const launch = finite(event.launch, 0);
+      const lastEmission = finite(event.burst, launch + 30) + finite(event.life, 0);
+      if (launch > time || lastEmission + MAX_AGE < time) continue;
+      if (eventCache.has(event.id)) { result.push(...eventCache.get(event.id)); continue; }
+      const eventPuffs = [];
+      // No independently prescribed ascent curve: both trails and delayed child
+      // bursts use their real trajectory and velocity at the emission instant.
+      for (const source of model.smokeSources(event, wind)) {
+        if (![source.birth, source.x, source.y, source.z].every(Number.isFinite)) continue;
+        const profile = kinds[source.kind] || kinds.star;
+        const seed = seedFor(`${event.id}/${source.id}`);
+        const variation = 0.9 + (seed % 1000) / 5000;
+        const variance = (profile.sigma * variation) ** 2;
+        const strength = Math.max(0, finite(source.strength, 1));
+        eventPuffs.push({
+          id: `${event.id}-smoke-${source.id}`, eventId: event.id,
+          birth: source.birth, x: source.x, y: source.y, z: source.z,
+          vx: finite(source.vx, Math.sin(wind.windDirection * Math.PI / 180) * wind.windSpeed),
+          vy: finite(source.vy, 0),
+          vz: finite(source.vz, Math.cos(wind.windDirection * Math.PI / 180) * wind.windSpeed),
+          variance, opticalAmount: profile.opticalDepth * variance * strength,
+          diffusion: profile.diffusion * variation,
+          buoyancy: profile.buoyancy * variation, cooling: profile.cooling,
+          emission: profile.emission, momentumTime: 0.22, seed
+        });
+      }
+      eventCache.set(event.id, eventPuffs);
+      result.push(...eventPuffs);
+    }
+    // Generate only events whose smoke can exist at this time, caching each
+    // independently. Seeking and wind changes never simulate future launches.
+    return result;
+  }
+
+  function sample(time, events, options = {}) {
+    if (!Array.isArray(events)) return [];
+    options = options || {};
+    const t = clamp(finite(time, 0), 0, 180);
+    const density = clamp(finite(options.density, 1), 0, 5);
+    if (density === 0) return [];
+    const wind = windSettings(options);
+    const direction = wind.windDirection * Math.PI / 180;
+    const windX = Math.sin(direction) * wind.windSpeed;
+    const windZ = Math.cos(direction) * wind.windSpeed;
+    const puffs = [];
+    for (const puff of descriptors(events, wind, t)) {
+      const age = t - puff.birth;
+      if (age < 0) continue;
+      if (age > MAX_AGE) continue;
+      const variance = puff.variance + 2 * puff.diffusion * age;
+      const emission = clamp(age / puff.emission, 0, 1);
+      const retirementProgress = clamp((age - 60) / 15, 0, 1);
+      const retirement = 1 - retirementProgress * retirementProgress * (3 - 2 * retirementProgress);
+      const opticalDepth = density * puff.opticalAmount * emission * retirement / variance;
+      const opacity = -Math.expm1(-opticalDepth);
+      if (opacity < 0.0005) continue;
+      // Rapid entrainment relaxes the emitted smoke toward the ambient wind.
+      // Its inherited momentum is integrated analytically, as is a decaying
+      // buoyant velocity that approximates cooling of the hot plume.
+      const momentum = puff.momentumTime * -Math.expm1(-age / puff.momentumTime);
+      const buoyantRise = puff.buoyancy * puff.cooling * -Math.expm1(-age / puff.cooling);
+      puffs.push({
+        id: puff.id, eventId: puff.eventId,
+        x: puff.x + windX * age + (puff.vx - windX) * momentum,
+        y: Math.max(0, puff.y + puff.vy * momentum + buoyantRise),
+        z: puff.z + windZ * age + (puff.vz - windZ) * momentum,
+        radius: 3 * Math.sqrt(variance), opacity, seed: puff.seed
+      });
+    }
+    // A practical rendering bound, retaining the most optically visible puffs.
+    // Normally the full 75-second history fits; no density- or wind-randomness.
+    if (puffs.length > MAX_PUFFS) {
+      puffs.sort((a, b) => b.opacity - a.opacity || a.id.localeCompare(b.id));
+      puffs.length = MAX_PUFFS;
+    }
+    return puffs;
+  }
+
+  root.HanabiSmoke = Object.freeze({ sample });
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const canvas = $('world'), ctx = canvas.getContext('2d', { alpha: false });
+  const map = $('map'), mc = map.getContext('2d');
+  const model = window.FireworksModel, TAU = Math.PI * 2, DEG = Math.PI / 180;
+  const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
+  const wrap = n => (n % 360 + 360) % 360;
+  const state = { time:0, playing:!matchMedia('(prefers-reduced-motion: reduce)').matches, speed:1, distance:1100, height:25, azimuth:0, pitch:14, tracking:true, guides:false, grid:true, map:true, smoke:false, smokeDensity:1, windSpeed:4, windDirection:90, selectedType:'sphere', studyEventId:null };
+  const presets = {shore:[1100,25,0],air:[500,1100,25],side:[1100,80,90],near:[350,300,90]};
+  const presetNames = {shore:'湾岸から',air:'上空から',side:'真横から',near:'花火のそばから'};
+  const typeById=new Map(model.types.map(type=>[type.id,type]));
+  for(const type of model.types){const option=document.createElement('option');option.value=type.id;option.textContent=`${type.name} · ${type.dimension}`;$('fireworkType').appendChild(option);}
+  $('typeCount').textContent=`${model.types.length} TYPES`;
+  const keys = new Set(); let heldAction=null, holdSince=0, lastFrame=0, lastUI=-1, dirty=true, width=0,height=0,dpr=1, camera;
+  let worldSample=model.sample(0), sampleKey='', smokeSample=[], smokeKey='';
+  const rng = seed => {let s=seed;return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296;}};
+  const random=rng(4621), skyStars=[], buildings=[], waves=[];
+  for(let i=0;i<120;i++){const a=random()*TAU,e=.08+random()*1.4;skyStars.push({x:Math.sin(a)*Math.cos(e)*60000,y:Math.sin(e)*60000,z:Math.cos(a)*Math.cos(e)*60000,size:.4+random()*.65,alpha:.1+random()*.35});}
+  for(let i=0;i<180;i++){const a=i/180*TAU, r=3900+random()*350;buildings.push({x:Math.sin(a)*r,z:Math.cos(a)*r,h:25+random()**2*180,w:30+random()*70,d:25+random()*50,seed:i});}
+  for(let i=0;i<560;i++){waves.push({x:(random()-.5)*7500,z:(random()-.5)*7500,len:8+random()*35,alpha:.08+random()*.2});}
+  const sprites=new Map();
+  function sprite(color){const key=color.join(',');if(sprites.has(key))return sprites.get(key);const c=document.createElement('canvas');c.width=c.height=48;const g=c.getContext('2d'),r=g.createRadialGradient(24,24,0,24,24,24);r.addColorStop(0,'rgba(255,255,255,1)');r.addColorStop(.12,`rgba(${key},.9)`);r.addColorStop(.32,`rgba(${key},.3)`);r.addColorStop(1,`rgba(${key},0)`);g.fillStyle=r;g.fillRect(0,0,48,48);sprites.set(key,c);return c;}
+  for(const e of model.events)sprite(e.color);
+  const smokeSprites=new Map();
+  function smokeSprite(color){
+    const rgb=color.map(v=>clamp(Math.round(v/16)*16,0,255)),key=rgb.join(',');
+    if(smokeSprites.has(key))return smokeSprites.get(key);
+    const c=document.createElement('canvas');c.width=c.height=96;const g=c.getContext('2d');
+    // Soft overlapping lobes avoid a hard-edged circle around each 3D puff.
+    for(const [x,y,r,a] of [[48,48,47,.85],[36,41,31,.34],[62,38,29,.3],[49,62,32,.25]]){
+      const grad=g.createRadialGradient(x,y,0,x,y,r);grad.addColorStop(0,`rgba(${key},${a})`);grad.addColorStop(.35,`rgba(${key},${a*.75})`);grad.addColorStop(.7,`rgba(${key},${a*.28})`);grad.addColorStop(1,`rgba(${key},0)`);g.fillStyle=grad;g.fillRect(0,0,96,96);
+    }
+    smokeSprites.set(key,c);return c;
+  }
+  function refreshSmoke(){
+    const key=[state.time,state.smoke,state.smokeDensity,state.windSpeed,state.windDirection].join('/');
+    if(key===smokeKey)return;smokeKey=key;
+    smokeSample=state.smoke?window.HanabiSmoke.sample(state.time,model.events,{density:state.smokeDensity,windSpeed:state.windSpeed,windDirection:state.windDirection}):[];
+  }
+  function smokeColor(puff){
+    const rgb=[63,76,94];
+    // Nearby live shells illuminate the smoke. Old clouds remain neutral.
+    for(const b of worldSample.bursts){
+      const d2=(b.x-puff.x)**2+(b.y-puff.y)**2+(b.z-puff.z)**2;
+      const intensity=Math.max(0,1-b.age/b.life)*Math.exp(-d2/(2*(b.radius+95)**2))*.7;
+      for(let i=0;i<3;i++)rgb[i]+=b.color[i]*intensity;
+    }
+    return rgb;
+  }
+  function drawSmokePuff(puff,p){
+    const radius=Math.min(puff.radius*p.scale,Math.max(width,height)*2);if(radius<.3)return;
+    // Blend nearby clouds into local haze before their centres cross the camera.
+    const nearFade=clamp((p.z-3)/(puff.radius*.7),0,1);
+    ctx.globalCompositeOperation='source-over';ctx.globalAlpha=puff.opacity*nearFade;
+    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(puff.seed%628/100);ctx.drawImage(smokeSprite(smokeColor(puff)),-radius,-radius,2*radius,2*radius);ctx.restore();
+  }
+  function drawLocalSmoke(){
+    if(!state.smoke)return;
+    ctx.save();ctx.globalCompositeOperation='source-over';
+    for(const puff of smokeSample){
+      const d=Math.hypot(puff.x-camera.x,puff.y-camera.y,puff.z-camera.z);
+      const inside=clamp(1-d/(puff.radius*1.15),0,1);if(inside<=0)continue;
+      ctx.globalAlpha=puff.opacity*inside;ctx.fillStyle=`rgb(${smokeColor(puff).map(v=>Math.round(clamp(v,0,255))).join(',')})`;ctx.fillRect(0,0,width,height);
+    }
+    ctx.restore();
+  }
+  function announce(text){$('announcement').textContent=text;}
+  function centerPitch(){return Math.atan2(300-state.height,state.distance)/DEG;}
+  function cameraFor(s=state){const a=s.azimuth*DEG,p=s.pitch*DEG,sa=Math.sin(a),ca=Math.cos(a),sp=Math.sin(p),cp=Math.cos(p);return{x:sa*s.distance,y:s.height,z:ca*s.distance,right:[ca,0,-sa],up:[sa*sp,cp,ca*sp],forward:[-sa*cp,sp,-ca*cp],f:Math.min(height/(2*Math.tan(24*DEG)),width/(2*Math.tan(32*DEG))),cx:width/2,cy:height*.52};}
+  function view(x,y,z){const dx=x-camera.x,dy=y-camera.y,dz=z-camera.z;return{x:dx*camera.right[0]+dz*camera.right[2],y:dx*camera.up[0]+dy*camera.up[1]+dz*camera.up[2],z:dx*camera.forward[0]+dy*camera.forward[1]+dz*camera.forward[2]};}
+  function screen(v){return{x:camera.cx+v.x*camera.f/v.z,y:camera.cy-v.y*camera.f/v.z,z:v.z,scale:camera.f/v.z};}
+  function project(x,y,z){const v=view(x,y,z);return v.z>3?screen(v):null;}
+  function inView(p,margin=100){return p&&p.x>-margin&&p.x<width+margin&&p.y>-margin&&p.y<height+margin;}
+  function line(a,b,color,lw=1){let av=view(...a),bv=view(...b);if(av.z<=3&&bv.z<=3)return;if(av.z<=3||bv.z<=3){const t=(3-av.z)/(bv.z-av.z),v={x:av.x+(bv.x-av.x)*t,y:av.y+(bv.y-av.y)*t,z:3};if(av.z<=3)av=v;else bv=v;}const aa=screen(av),bb=screen(bv);ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.beginPath();ctx.moveTo(aa.x,aa.y);ctx.lineTo(bb.x,bb.y);ctx.stroke();}
+  function polygon(points,color){let verts=points.map(p=>view(...p)),out=[];for(let i=0;i<verts.length;i++){const a=verts[i],b=verts[(i+1)%verts.length],ai=a.z>3,bi=b.z>3;if(ai)out.push(a);if(ai!==bi){const t=(3-a.z)/(b.z-a.z);out.push({x:a.x+(b.x-a.x)*t,y:a.y+(b.y-a.y)*t,z:3});}}if(out.length<3)return;ctx.fillStyle=color;ctx.beginPath();out.forEach((v,i)=>{const p=screen(v);if(i)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);});ctx.closePath();ctx.fill();}
+  function path3(points,color,lw=1,close=false){ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.beginPath();let pen=false;for(const xyz of points){const p=project(...xyz);if(!p){pen=false;continue;}if(pen)ctx.lineTo(p.x,p.y);else ctx.moveTo(p.x,p.y);pen=true;}if(close)ctx.closePath();ctx.stroke();}
+  function label(text,x,y,z,color='#b3c5dc',dy=0){const p=project(x,y,z);if(!inView(p,0)||(p.y<150&&p.x<Math.min(430,width*.68)))return;ctx.font='11px -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif';ctx.textAlign='center';const tw=ctx.measureText(text).width;ctx.fillStyle='rgba(7,16,30,.8)';ctx.fillRect(p.x-tw/2-7,p.y-9+dy,tw+14,19);ctx.fillStyle=color;ctx.fillText(text,p.x,p.y+4+dy);}
+  function drawEnvironment(){
+    const sky=ctx.createLinearGradient(0,0,0,height);sky.addColorStop(0,'#040814');sky.addColorStop(.6,'#0b1830');sky.addColorStop(1,'#10273c');ctx.fillStyle=sky;ctx.fillRect(0,0,width,height);
+    for(const star of skyStars){const p=project(star.x,star.y,star.z);if(!inView(p,2))continue;ctx.fillStyle=`rgba(187,207,231,${star.alpha})`;ctx.beginPath();ctx.arc(p.x,p.y,star.size,0,TAU);ctx.fill();}
+    polygon([[-70000,0,-70000],[70000,0,-70000],[70000,0,70000],[-70000,0,70000]],'#091929');
+    if(state.grid){for(let i=-3000;i<=3000;i+=200){const major=i%1000===0;line([i,0,-3000],[i,0,3000],major?'rgba(83,131,161,.22)':'rgba(77,123,154,.10)');line([-3000,0,i],[3000,0,i],major?'rgba(83,131,161,.22)':'rgba(77,123,154,.10)');}const ring=[];for(let i=0;i<=100;i++)ring.push([Math.sin(i/100*TAU)*state.distance,.2,Math.cos(i/100*TAU)*state.distance]);path3(ring,'rgba(137,182,208,.15)');}
+    for(const w of waves)line([w.x,.4,w.z],[w.x+w.len,.4,w.z],`rgba(66,110,143,${w.alpha})`,.7);
+    buildings.sort((a,b)=>Math.hypot(b.x-camera.x,b.z-camera.z)-Math.hypot(a.x-camera.x,a.z-camera.z));
+    for(const b of buildings){const x=b.x,z=b.z,w=b.w/2,d=b.d/2,h=b.h;const center=project(x,h/2,z);if(!inView(center,80))continue;polygon([[x-w,0,z-d],[x+w,0,z-d],[x+w,h,z-d],[x-w,h,z-d]],'#0b1424');polygon([[x-w,0,z+d],[x+w,0,z+d],[x+w,h,z+d],[x-w,h,z+d]],'#101c2e');polygon([[x-w,0,z-d],[x-w,0,z+d],[x-w,h,z+d],[x-w,h,z-d]],'#121e30');polygon([[x+w,0,z-d],[x+w,0,z+d],[x+w,h,z+d],[x+w,h,z-d]],'#142136');polygon([[x-w,h,z-d],[x+w,h,z-d],[x+w,h,z+d],[x-w,h,z+d]],'#18263b');for(let j=0;j<Math.floor(h/16);j++){const y=8+j*15;const p=project(x,y,z+Math.sign(camera.z-z)*(d+.1));if(p){ctx.fillStyle=(j+b.seed)%4===0?'#948774':'#385473';ctx.globalAlpha=.5;ctx.fillRect(p.x-1,p.y,2,1);ctx.globalAlpha=1;}}}
+    for(const site of model.sites){const {x,z}=site;polygon([[x-31,2,z-15],[x+31,2,z-15],[x+31,2,z+15],[x-31,2,z+15]],'#364959');line([x-31,3,z+15],[x+31,3,z+15],'#b9aa88',1.7);const p=project(x,6,z);if(p){ctx.fillStyle=site.id==='A'?'#8bd0ed':'#f2b0c3';ctx.beginPath();ctx.arc(p.x,p.y,2,0,TAU);ctx.fill();}label(`打上 ${site.id}`,x,10,z,site.id==='A'?'#a7d9f3':'#f2bdd0',20);}
+    if(state.guides){line([-230,1,0],[230,1,0],'rgba(213,224,237,.55)');label('460 m',0,2,0,'#ced9e6',18);line([-420,0,0],[-420,600,0],'rgba(160,192,218,.35)');for(let h=100;h<=600;h+=100){line([-430,h,0],[-410,h,0],'#68839e');label(`${h} m`,-455,h,0,'#9eb5cc');}}
+  }
+  function drawReflection(){if(state.height>900)return;ctx.save();ctx.globalCompositeOperation='lighter';const strength=.26*(1-state.height/1100);for(let i=0;i<worldSample.sparks.length;i+=5){const s=worldSample.sparks[i],p=project(s.x,-s.y,s.z);if(!inView(p,10))continue;const c=s.color;ctx.fillStyle=`rgba(${c.join(',')},${s.alpha*strength})`;const jitter=Math.sin(s.x*.3+s.y*.12)*4;ctx.fillRect(p.x-2+jitter,p.y,4+Math.min(12,1200/p.z),1.1);}ctx.restore();}
+  function drawGuides(){
+    if(!state.guides)return;
+    for(const b of worldSample.bursts){
+      if(b.secondary||b.age<.3||b.age>b.life*.83)continue;
+      const opacity=Math.min(.65,(1-b.age/b.life)*1.1),r=b.radius,meta=typeById.get(b.type);
+      // These paths follow simulated particle positions, including wind and
+      // unequal drag. An ideal sphere would hide the very deformation we study.
+      for(const guide of b.guidePaths||[])path3(guide.points,`rgba(192,217,238,${opacity*.65})`,.7,guide.closed);
+      label(`${b.site} · ${meta.name}`,b.x,b.y+r+22,b.z,b.id===state.studyEventId?'#ffe0ac':'#d4e3ef',-5);
+    }
+  }
+  function drawFireworks(){
+    // Painter order across BOTH light and smoke: a cloud in front veils a spark;
+    // a spark in front stays bright. Sorting is recalculated for every viewpoint.
+    const layers=[];
+    for(const puff of smokeSample){const p=project(puff.x,puff.y,puff.z);if(inView(p,p?puff.radius*p.scale:0))layers.push({kind:'smoke',item:puff,p});}
+    for(const b of worldSample.bursts){if(b.age>.24)continue;const p=project(b.x,b.y,b.z);if(inView(p))layers.push({kind:'flash',item:b,p});}
+    for(const spark of worldSample.sparks){const p=project(spark.x,spark.y,spark.z);if(inView(p,20))layers.push({kind:'spark',item:spark,p});}
+    for(const rocket of worldSample.rockets){const p=project(rocket.x,rocket.y,rocket.z);if(inView(p))layers.push({kind:'rocket',item:rocket,p});}
+    layers.sort((a,b)=>b.p.z-a.p.z);
+    ctx.save();
+    for(const layer of layers){
+      const {kind,item:s,p}=layer;
+      if(kind==='smoke'){drawSmokePuff(s,p);continue;}
+      ctx.globalCompositeOperation='lighter';ctx.globalAlpha=1;
+      if(kind==='flash'){const a=1-s.age/.24;ctx.globalAlpha=a*.85;const r=clamp(25*p.scale,8,60);ctx.drawImage(sprite(s.color),p.x-r,p.y-r,r*2,r*2);continue;}
+      if(kind==='spark'){
+        const size=clamp(s.size*camera.f*1.13/p.z,.35,5);
+        const q=project(s.px,s.py,s.pz);
+        if(q){ctx.strokeStyle=`rgba(${s.color.join(',')},${s.alpha*.64})`;ctx.lineWidth=Math.max(.5,size*.55);ctx.beginPath();ctx.moveTo(q.x,q.y);ctx.lineTo(p.x,p.y);ctx.stroke();}
+        ctx.globalAlpha=s.alpha*.66;const glow=size*3.8;ctx.drawImage(sprite(s.color.map(c=>Math.min(255,Math.round(c/24)*24))),p.x-glow,p.y-glow,glow*2,glow*2);
+        ctx.globalAlpha=s.alpha;ctx.fillStyle=`rgb(${s.color.join(',')})`;ctx.beginPath();ctx.arc(p.x,p.y,size*.56,0,TAU);ctx.fill();
+      }else{
+        ctx.globalAlpha=s.alpha??.85;
+        const q=project(s.prevX,s.prevY,s.prevZ);
+        if(q){const g=ctx.createLinearGradient(q.x,q.y,p.x,p.y);g.addColorStop(0,'rgba(255,180,85,0)');g.addColorStop(1,'rgba(255,216,145,.9)');ctx.strokeStyle=g;ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(q.x,q.y);ctx.lineTo(p.x,p.y);ctx.stroke();}
+        const sz=clamp((s.child?2:5)*p.scale,s.child?1.5:3,10);ctx.drawImage(sprite(s.color||[255,191,76]),p.x-sz,p.y-sz,sz*2,sz*2);
+      }
+    }
+    ctx.restore();
+  }
+  function drawMap(){if(!state.map)return;mc.setTransform(2,0,0,2,0,0);const w=174,h=140,cx=87,cy=71,scale=53/(Math.max(state.distance,650)*1.15);mc.clearRect(0,0,w,h);const xy=(x,z)=>[cx+x*scale,cy-z*scale];mc.strokeStyle='#2c4258';mc.lineWidth=.7;mc.beginPath();mc.moveTo(cx,9);mc.lineTo(cx,133);mc.moveTo(14,cy);mc.lineTo(160,cy);mc.stroke();mc.setLineDash([2,4]);mc.beginPath();mc.arc(cx,cy,state.distance*scale,0,TAU);mc.stroke();mc.setLineDash([]);const cp=xy(camera.x,camera.z);mc.strokeStyle='#cfbd9c';mc.beginPath();mc.moveTo(...cp);mc.lineTo(cx,cy);mc.stroke();mc.fillStyle='rgba(210,188,151,.07)';mc.beginPath();mc.moveTo(...cp);const facing=Math.atan2(cy-cp[1],cx-cp[0]);mc.arc(...cp,Math.min(75,state.distance*scale),facing-.45,facing+.45);mc.closePath();mc.fill();for(const s of model.sites){const p=xy(s.x,s.z);mc.fillStyle=s.id==='A'?'#97cfea':'#e9acc3';mc.beginPath();mc.arc(...p,3,0,TAU);mc.fill();mc.font='10px sans-serif';mc.textAlign=s.id==='A'?'right':'left';mc.fillText(s.id,p[0]+(s.id==='A'?-6:6),p[1]+4);}mc.save();mc.translate(...cp);mc.rotate(facing);mc.fillStyle='#f3ce98';mc.beginPath();mc.moveTo(6,0);mc.lineTo(-4,-4);mc.lineTo(-2,0);mc.lineTo(-4,4);mc.closePath();mc.fill();mc.restore();mc.fillStyle='#93a9c0';mc.font='9px sans-serif';mc.textAlign='right';mc.fillText(`${Math.round(state.azimuth)}°`,163,131);drawWindMap();}
+  function drawWindMap(){
+    const a=state.windDirection*DEG,dx=Math.sin(a),dy=-Math.cos(a),cx=25,cy=22;
+    mc.fillStyle='#c4c9d1';mc.strokeStyle='#c4c9d1';mc.lineWidth=1.3;
+    if(state.windSpeed===0){mc.beginPath();mc.arc(cx,cy,3,0,TAU);mc.stroke();}
+    else {const tip=[cx+dx*9,cy+dy*9];mc.beginPath();mc.moveTo(cx-dx*9,cy-dy*9);mc.lineTo(...tip);mc.lineTo(tip[0]-dx*4+dy*3,tip[1]-dy*4-dx*3);mc.moveTo(...tip);mc.lineTo(tip[0]-dx*4-dy*3,tip[1]-dy*4+dx*3);mc.stroke();}
+    mc.font='9px sans-serif';mc.textAlign='left';mc.fillText(state.windSpeed===0?'無風':`風 ${state.windSpeed.toFixed(1)} m/s`,42,25);
+  }
+  function updateSmokeUI(){
+    $('smoke').checked=state.smoke;$('smokeControls').hidden=!state.smoke;$('smokeStatus').hidden=false;
+    $('smokeDensityValue').innerHTML=`${Math.round(state.smokeDensity*100)}<small>%</small>`;
+    $('windSpeedValue').innerHTML=`${state.windSpeed.toFixed(1)}<small>m/s</small>`;
+    $('windDirectionValue').innerHTML=`${Math.round(state.windDirection)}<small>°</small>`;
+    const flow=state.windSpeed===0?'無風':`風 ${state.windSpeed.toFixed(1)} m/s · 流れる先 ${Math.round(state.windDirection)}°`;
+    $('smokeStatus').textContent=`${state.smoke?'煙 ON · ':''}${flow}`;
+  }
+  function toggleSmoke(on){state.smoke=on;dirty=true;updateUI();announce(on?'煙を表示しました':'煙を非表示にしました。風は花火の運動に引き続き作用します');}
+  function updateTypeUI(){
+    const meta=typeById.get(state.selectedType);if($('shapeDescription').textContent!==meta.description)$('shapeDescription').textContent=meta.description;
+    const names=[];
+    for(const site of model.sites){
+      const live=[...new Set(worldSample.bursts.filter(b=>b.site===site.id&&b.age<b.life*.76).map(b=>typeById.get(b.type).name))];
+      if(live.length)names.push(`${site.id}：${live.slice(-2).join('・')}`);
+    }
+    const caption=names.length?names.join('　 /　 '):state.time>=180?'打ち上げ終了':'開花を待っています';if($('activeTypes').textContent!==caption)$('activeTypes').textContent=caption;
+  }
+  function inspectType(){
+    const selected=model.studyTimes[state.selectedType],meta=typeById.get(state.selectedType);
+    state.time=selected.time;state.playing=false;state.studyEventId=selected.eventId;state.guides=true;
+    state.distance=950;state.height=65;state.azimuth=wrap(selected.azimuth);state.tracking=true;
+    changed();$('viewName').textContent=`${meta.name}の観察`;
+    announce(`${meta.name}が開いた時刻で一時停止しました。左右キーで周回して観察できます`);
+  }
+  function draw(){camera=cameraFor();const key=[state.time,state.windSpeed,state.windDirection].join('/');if(sampleKey!==key){worldSample=model.sample(state.time,{windSpeed:state.windSpeed,windDirection:state.windDirection});sampleKey=key;updateTypeUI();}refreshSmoke();drawEnvironment();drawReflection();drawGuides();drawFireworks();drawLocalSmoke();drawMap();const target=project(0,300,0);$('offscreen').hidden=state.time>=180||inView(target,-40);dirty=false;}
+  function resize(){const rect=$('scene').getBoundingClientRect();width=rect.width;height=rect.height;dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);dirty=true;}
+  function updateUI(){
+    for(const name of ['distance','height','azimuth','pitch']){const n=Math.round(state[name]);$(name).value=n;$(`${name}Value`).innerHTML=`${n.toLocaleString('ja-JP')}<small>${name==='height'||name==='distance'?'m':'°'}</small>`;}
+    $('hudDistance').textContent=`${Math.round(state.distance).toLocaleString('ja-JP')} m`;$('hudHeight').textContent=`${Math.round(state.height).toLocaleString('ja-JP')} m`;$('hudAzimuth').textContent=`${Math.round(state.azimuth)}°`;$('tracking').checked=state.tracking;$('guides').checked=state.guides;updateSmokeUI();updateTypeUI();
+    $('time').value=state.time;const sec=Math.floor(state.time);$('clock').textContent=`${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`;$('time').setAttribute('aria-valuetext',`${Math.floor(sec/60)}分${sec%60}秒`);
+    $('play').textContent=state.playing?'Ⅱ 一時停止':state.time>=180?'▶ もう一度':'▶ 再生';$('play').setAttribute('aria-label',state.playing?'一時停止':'再生');document.body.classList.toggle('paused',!state.playing);$('finished').hidden=state.time<180;
+    $('phase').textContent=state.time>=180?'FIN / 終幕':state.time>=150?'04 / フィナーレ':state.time>=120?'03 / 輪と球':state.time>=60?'02 / 広がり':'01 / 開幕';
+    if(state.smoke){$('insightTitle').textContent='煙が手前に重なると、花火がかすんで見える。';$('insightText').textContent='同じ時刻で周回したり、風の向き・強さを変えたりして、煙の位置と見え方を比べてみましょう。';}
+    else if(state.height>600){$('insightTitle').textContent='上から見ると、花火の奥行きが現れる。';$('insightText').textContent='水面と花火の高さを比べてみましょう。高度を変えても、水平距離は一定です。';}
+    else if(Math.abs(Math.cos(state.azimuth*DEG))<.3){$('insightTitle').textContent='2地点が重なると、遠近の違いが見える。';$('insightText').textContent='AとBを結ぶ方向から見ると、手前の花火は大きく、奥の花火は小さく見えます。';}
+    else if(state.guides){$('insightTitle').textContent='花火の光は、三次元に広がっている。';$('insightText').textContent='補助線を手がかりに周回して、光の粒がどの方向に広がっているか観察してみましょう。';}
+    else{$('insightTitle').textContent='距離が変わると、見かけの大きさが変わる。';$('insightText').textContent='一時停止してから回り込むと、同じ花火を別の角度から観察できます。';}
+  }
+  function changed(custom=true){if(state.tracking)state.pitch=centerPitch();if(custom){document.querySelectorAll('[data-preset]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false');});$('viewName').textContent='自由な視点';}dirty=true;updateUI();}
+  function setView(name){const p=presets[name];[state.distance,state.height,state.azimuth]=p;state.tracking=true;state.pitch=centerPitch();document.querySelectorAll('[data-preset]').forEach(b=>{const yes=b.dataset.preset===name;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',String(yes));});$('viewName').textContent=presetNames[name];changed(false);announce(`${presetNames[name]}の視点に変更しました`);}
+  function move(action,dt,boost=1){const linear=dt*boost,radialSpeed=clamp(state.distance*.4,10,260);switch(action){case'near':state.distance=clamp(state.distance-radialSpeed*linear,10,3000);break;case'far':state.distance=clamp(state.distance+radialSpeed*linear,10,3000);break;case'up':state.height=clamp(state.height+180*linear,5,1600);break;case'down':state.height=clamp(state.height-180*linear,5,1600);break;case'left':state.azimuth=wrap(state.azimuth-32*linear);break;case'right':state.azimuth=wrap(state.azimuth+32*linear);break;case'lookUp':state.tracking=false;state.pitch=clamp(state.pitch+28*linear,-90,90);break;case'lookDown':state.tracking=false;state.pitch=clamp(state.pitch-28*linear,-90,90);break;}changed();}
+  function playToggle(){if(state.time>=180)state.time=0;state.playing=!state.playing;dirty=true;updateUI();announce(state.playing?'再生しました':'一時停止しました。視点を変更できます');}
+  function restart(){state.time=0;state.playing=true;dirty=true;updateUI();announce('最初から3分間の再生を開始しました');}
+  const keyActions={ArrowUp:'up',KeyW:'up',ArrowDown:'down',KeyS:'down',ArrowLeft:'left',ArrowRight:'right',KeyA:'near',KeyZ:'far',KeyE:'lookUp',KeyD:'lookDown'};
+  function isEditing(target){return target&&(/^(INPUT|SELECT|TEXTAREA)$/.test(target.tagName)||target.isContentEditable);}
+  document.addEventListener('keydown',e=>{if(isEditing(e.target)||e.metaKey||e.ctrlKey||e.altKey)return;if(keyActions[e.code]){e.preventDefault();keys.add(e.code);}else if(e.code==='ShiftLeft'||e.code==='ShiftRight'){keys.add(e.code);}else if(e.code==='Space'&&e.target.tagName!=='BUTTON'){e.preventDefault();if(!e.repeat)playToggle();}else if(e.code==='KeyH'&&!e.repeat){e.preventDefault();toggleSmoke(!state.smoke);}else if(e.code==='KeyR'&&!e.repeat){e.preventDefault();restart();}});
+  document.addEventListener('keyup',e=>keys.delete(e.code));
+  window.addEventListener('blur',()=>{keys.clear();heldAction=null;});
+  document.addEventListener('visibilitychange',()=>{keys.clear();heldAction=null;if(document.hidden&&state.playing){state.playing=false;updateUI();announce('画面が非表示になったため一時停止しました');}lastFrame=0;});
+  document.querySelectorAll('[data-action]').forEach(button=>{button.addEventListener('pointerdown',e=>{if(e.button!==0)return;button.setPointerCapture(e.pointerId);heldAction=button.dataset.action;holdSince=performance.now();move(heldAction,.15);});const stop=()=>{heldAction=null;};button.addEventListener('pointerup',stop);button.addEventListener('pointercancel',stop);button.addEventListener('lostpointercapture',stop);button.addEventListener('click',e=>{if(e.detail===0)move(button.dataset.action,.15);});});
+  document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.preset)));
+  for(const name of ['distance','height','azimuth','pitch'])$(name).addEventListener('input',()=>{state[name]=name==='azimuth'?wrap(+$(name).value):+$(name).value;if(name==='pitch')state.tracking=false;changed();});
+  $('play').addEventListener('click',playToggle);$('restart').addEventListener('click',restart);$('time').addEventListener('input',()=>{state.time=+$('time').value;state.playing=false;dirty=true;updateUI();});$('time').addEventListener('change',()=>announce(`${$('clock').textContent}で一時停止しました`));$('speed').addEventListener('change',()=>{state.speed=+$('speed').value;});
+  function recenter(){state.tracking=true;changed();announce('花火の中心に視線を合わせました');}
+  $('recenter').addEventListener('click',recenter);$('recenterOverlay').addEventListener('click',recenter);$('tracking').addEventListener('change',()=>{state.tracking=$('tracking').checked;changed();});
+  $('guides').addEventListener('change',()=>{state.guides=$('guides').checked;dirty=true;updateUI();});$('grid').addEventListener('change',()=>{state.grid=$('grid').checked;dirty=true;});$('showMap').addEventListener('change',()=>{state.map=$('showMap').checked;$('mapbox').hidden=!state.map;dirty=true;});
+  $('smoke').addEventListener('change',()=>toggleSmoke($('smoke').checked));
+  for(const name of ['smokeDensity','windSpeed','windDirection'])$(name).addEventListener('input',()=>{state[name]=+$(name).value/(name==='smokeDensity'?100:1);dirty=true;updateUI();});
+  $('fireworkType').addEventListener('change',()=>{state.selectedType=$('fireworkType').value;updateTypeUI();});
+  $('inspectType').addEventListener('click',inspectType);
+  $('study').addEventListener('click',()=>{state.time=model.comparisonTime;state.playing=false;state.studyEventId=null;state.guides=true;setView('shore');announce('球と輪が見える時刻で一時停止しました。左右キーで回り込んで観察できます');});
+  $('toggleControls').addEventListener('click',()=>{const hidden=document.body.classList.toggle('hide-controls');$('toggleControls').textContent=hidden?'操作パネルを表示':'操作パネルを隠す';$('toggleControls').setAttribute('aria-pressed',String(hidden));resize();});
+  $('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{announce('このブラウザーでは全画面を利用できません');}});document.addEventListener('fullscreenchange',()=>{$('fullscreen').textContent=document.fullscreenElement?'全画面を終了':'全画面';resize();});
+  let drag=null;canvas.addEventListener('pointerdown',e=>{if(e.button!==0)return;canvas.setPointerCapture(e.pointerId);drag={x:e.clientX,y:e.clientY};});canvas.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;state.azimuth=wrap(state.azimuth-dx*.16);state.pitch=clamp(state.pitch+dy*.12,-90,90);state.tracking=false;drag={x:e.clientX,y:e.clientY};changed();});const release=()=>{drag=null;};canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);canvas.addEventListener('lostpointercapture',release);canvas.addEventListener('wheel',e=>{e.preventDefault();state.distance=clamp(state.distance+e.deltaY*clamp(state.distance*.0009,.025,.65),10,3000);changed();},{passive:false});
+  function frame(now){const elapsed=lastFrame?Math.max((now-lastFrame)/1000,0):0,dt=Math.min(elapsed,.1);lastFrame=now;const boost=keys.has('ShiftLeft')||keys.has('ShiftRight')?3:1;const actions=new Set([...keys].map(k=>keyActions[k]).filter(Boolean));for(const action of actions)move(action,dt,boost);if(heldAction&&now-holdSince>220)move(heldAction,dt);if(state.playing){state.time=Math.min(180,state.time+elapsed*state.speed);dirty=true;if(state.time>=180){state.playing=false;announce('3分間の打ち上げが終了しました');}}if(now-lastUI>100){updateUI();lastUI=now;}if(dirty)draw();requestAnimationFrame(frame);}
+  new ResizeObserver(resize).observe($('scene'));state.pitch=centerPitch();resize();updateUI();requestAnimationFrame(frame);
+  // A small read-only inspection hook makes the coordinate system auditable.
+  window.Hanabi = Object.freeze({getState:()=>({...state}),getCamera:()=>({...camera,right:[...camera.right],up:[...camera.up],forward:[...camera.forward]}),project:(x,y,z)=>project(x,y,z),model});
+})();
+
+</script>
+</body>
+</html>
