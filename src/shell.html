@@ -88,7 +88,7 @@ details a{color:#a9d8ee;text-underline-offset:3px}
    <div id="offscreen" class="banner" hidden><span>花火の中心が画面の外にあります</span><br><button id="recenterOverlay">中心を見る</button></div>
   </div>
   <section class="timeline" aria-label="再生と時間">
-   <div class="playrow"><button class="primary" id="play" aria-label="一時停止">Ⅱ 一時停止</button><button id="restart" aria-label="最初から再生">↺<span class="desktop-only"> 最初から</span></button><div class="timecode"><output id="clock">0:00</output><span> / 5:00</span></div><span class="phase" id="phase">01 / 開幕</span><label class="sr-only" for="speed">再生速度</label><select class="speed" id="speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1.0×</option><option value="1.5">1.5×</option><option value="2">2.0×</option></select></div>
+   <div class="playrow"><button class="primary" id="play"><span id="play-icon" aria-hidden="true">Ⅱ</span> <span id="play-label">一時停止</span></button><button id="restart" aria-label="最初から再生">↺<span class="desktop-only"> 最初から</span></button><div class="timecode"><output id="clock">0:00</output><span> / 5:00</span></div><span class="phase" id="phase">01 / 開幕</span><label class="sr-only" for="speed">再生速度</label><select class="speed" id="speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1" selected>1.0×</option><option value="1.5">1.5×</option><option value="2">2.0×</option></select></div>
    <label class="sr-only" for="time">観察する時刻（秒）</label><input class="scrub" id="time" type="range" min="0" max="300" value="0" step="0.05" aria-valuetext="0分0秒">
    <div class="timelabels"><span>0:00 開幕</span><span>1:00 広がり</span><span>3:00 輪と球</span><span>5:00 終幕</span></div>
   </section>
